@@ -1,6 +1,7 @@
 # include: package:flutter_lints/flutter.yaml
 analyzer:
   errors:
+    flutter_style_todos: ignore
     lines_longer_than_80_chars: ignore
     public_member_api_docs: ignore
     sort_pub_dependencies: ignore
