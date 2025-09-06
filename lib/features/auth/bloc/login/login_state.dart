@@ -23,4 +23,5 @@ abstract class LoginState with _$LoginState {
 abstract class LoginSingleTimeEvent with _$LoginSingleTimeEvent {
   const factory LoginSingleTimeEvent.navigateToHome() = _NavigateToHome;
   const factory LoginSingleTimeEvent.showErrorDialog(String message) = _ShowErrorDialog;
+  const factory LoginSingleTimeEvent.showSuccessDialog(String message) = _ShowSuccessDialog;
 }

@@ -16,7 +16,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       if (user != null) {
         add(const AuthEvent.checkAuthStatus());
       } else {
-        add(const AuthEvent.logout());
+        emit(const AuthState.unauthenticated());
       }
     });
   }

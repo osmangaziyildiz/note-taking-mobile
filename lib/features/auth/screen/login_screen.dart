@@ -59,6 +59,14 @@ class _LoginScreenState extends State<LoginScreen> {
                       );
                       context.read<LoginBloc>().clearSingleTimeEvent();
                     },
+                    showSuccessDialog: (message) {
+                      SnackbarHelper.showSuccess(
+                        context: context,
+                        title: 'Success',
+                        message: message,
+                      );
+                      context.read<LoginBloc>().clearSingleTimeEvent();
+                    },
                   );
                 }
               },
@@ -168,13 +176,17 @@ class _LoginScreenState extends State<LoginScreen> {
                 Align(
                   alignment: Alignment.centerRight,
                   child: TextButton(
-                    onPressed: () {
-                      // TODO: Implement forgot password
-                    },
+                    onPressed: state.isLoading
+                        ? null
+                        : () {
+                            context.read<LoginBloc>().add(
+                              const LoginEvent.forgotPasswordPressed(),
+                            );
+                          },
                     child: Text(
                       'Forgot Password?',
                       style: TextStyle(
-                        color: AppColors.grey,
+                        color: state.isLoading ? AppColors.grey.withValues(alpha: 0.5) : AppColors.grey,
                         fontSize: 14.sp,
                       ),
                     ),

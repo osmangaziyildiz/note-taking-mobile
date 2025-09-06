@@ -55,14 +55,15 @@ extension LoginEventPatterns on LoginEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _EmailChanged value)?  emailChanged,TResult Function( _PasswordChanged value)?  passwordChanged,TResult Function( _SubmitPressed value)?  submitPressed,TResult Function( _SignInWithGooglePressed value)?  signInWithGooglePressed,TResult Function( _ClearForm value)?  clearForm,TResult Function( _ClearSingleTimeEvent value)?  clearSingleTimeEvent,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _EmailChanged value)?  emailChanged,TResult Function( _PasswordChanged value)?  passwordChanged,TResult Function( _SubmitPressed value)?  submitPressed,TResult Function( _SignInWithGooglePressed value)?  signInWithGooglePressed,TResult Function( _ForgotPasswordPressed value)?  forgotPasswordPressed,TResult Function( _ClearForm value)?  clearForm,TResult Function( _ClearSingleTimeEvent value)?  clearSingleTimeEvent,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _EmailChanged() when emailChanged != null:
 return emailChanged(_that);case _PasswordChanged() when passwordChanged != null:
 return passwordChanged(_that);case _SubmitPressed() when submitPressed != null:
 return submitPressed(_that);case _SignInWithGooglePressed() when signInWithGooglePressed != null:
-return signInWithGooglePressed(_that);case _ClearForm() when clearForm != null:
+return signInWithGooglePressed(_that);case _ForgotPasswordPressed() when forgotPasswordPressed != null:
+return forgotPasswordPressed(_that);case _ClearForm() when clearForm != null:
 return clearForm(_that);case _ClearSingleTimeEvent() when clearSingleTimeEvent != null:
 return clearSingleTimeEvent(_that);case _:
   return orElse();
@@ -82,14 +83,15 @@ return clearSingleTimeEvent(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _EmailChanged value)  emailChanged,required TResult Function( _PasswordChanged value)  passwordChanged,required TResult Function( _SubmitPressed value)  submitPressed,required TResult Function( _SignInWithGooglePressed value)  signInWithGooglePressed,required TResult Function( _ClearForm value)  clearForm,required TResult Function( _ClearSingleTimeEvent value)  clearSingleTimeEvent,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _EmailChanged value)  emailChanged,required TResult Function( _PasswordChanged value)  passwordChanged,required TResult Function( _SubmitPressed value)  submitPressed,required TResult Function( _SignInWithGooglePressed value)  signInWithGooglePressed,required TResult Function( _ForgotPasswordPressed value)  forgotPasswordPressed,required TResult Function( _ClearForm value)  clearForm,required TResult Function( _ClearSingleTimeEvent value)  clearSingleTimeEvent,}){
 final _that = this;
 switch (_that) {
 case _EmailChanged():
 return emailChanged(_that);case _PasswordChanged():
 return passwordChanged(_that);case _SubmitPressed():
 return submitPressed(_that);case _SignInWithGooglePressed():
-return signInWithGooglePressed(_that);case _ClearForm():
+return signInWithGooglePressed(_that);case _ForgotPasswordPressed():
+return forgotPasswordPressed(_that);case _ClearForm():
 return clearForm(_that);case _ClearSingleTimeEvent():
 return clearSingleTimeEvent(_that);case _:
   throw StateError('Unexpected subclass');
@@ -108,14 +110,15 @@ return clearSingleTimeEvent(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _EmailChanged value)?  emailChanged,TResult? Function( _PasswordChanged value)?  passwordChanged,TResult? Function( _SubmitPressed value)?  submitPressed,TResult? Function( _SignInWithGooglePressed value)?  signInWithGooglePressed,TResult? Function( _ClearForm value)?  clearForm,TResult? Function( _ClearSingleTimeEvent value)?  clearSingleTimeEvent,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _EmailChanged value)?  emailChanged,TResult? Function( _PasswordChanged value)?  passwordChanged,TResult? Function( _SubmitPressed value)?  submitPressed,TResult? Function( _SignInWithGooglePressed value)?  signInWithGooglePressed,TResult? Function( _ForgotPasswordPressed value)?  forgotPasswordPressed,TResult? Function( _ClearForm value)?  clearForm,TResult? Function( _ClearSingleTimeEvent value)?  clearSingleTimeEvent,}){
 final _that = this;
 switch (_that) {
 case _EmailChanged() when emailChanged != null:
 return emailChanged(_that);case _PasswordChanged() when passwordChanged != null:
 return passwordChanged(_that);case _SubmitPressed() when submitPressed != null:
 return submitPressed(_that);case _SignInWithGooglePressed() when signInWithGooglePressed != null:
-return signInWithGooglePressed(_that);case _ClearForm() when clearForm != null:
+return signInWithGooglePressed(_that);case _ForgotPasswordPressed() when forgotPasswordPressed != null:
+return forgotPasswordPressed(_that);case _ClearForm() when clearForm != null:
 return clearForm(_that);case _ClearSingleTimeEvent() when clearSingleTimeEvent != null:
 return clearSingleTimeEvent(_that);case _:
   return null;
@@ -134,13 +137,14 @@ return clearSingleTimeEvent(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String email)?  emailChanged,TResult Function( String password)?  passwordChanged,TResult Function()?  submitPressed,TResult Function()?  signInWithGooglePressed,TResult Function()?  clearForm,TResult Function()?  clearSingleTimeEvent,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String email)?  emailChanged,TResult Function( String password)?  passwordChanged,TResult Function()?  submitPressed,TResult Function()?  signInWithGooglePressed,TResult Function()?  forgotPasswordPressed,TResult Function()?  clearForm,TResult Function()?  clearSingleTimeEvent,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _EmailChanged() when emailChanged != null:
 return emailChanged(_that.email);case _PasswordChanged() when passwordChanged != null:
 return passwordChanged(_that.password);case _SubmitPressed() when submitPressed != null:
 return submitPressed();case _SignInWithGooglePressed() when signInWithGooglePressed != null:
-return signInWithGooglePressed();case _ClearForm() when clearForm != null:
+return signInWithGooglePressed();case _ForgotPasswordPressed() when forgotPasswordPressed != null:
+return forgotPasswordPressed();case _ClearForm() when clearForm != null:
 return clearForm();case _ClearSingleTimeEvent() when clearSingleTimeEvent != null:
 return clearSingleTimeEvent();case _:
   return orElse();
@@ -160,13 +164,14 @@ return clearSingleTimeEvent();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String email)  emailChanged,required TResult Function( String password)  passwordChanged,required TResult Function()  submitPressed,required TResult Function()  signInWithGooglePressed,required TResult Function()  clearForm,required TResult Function()  clearSingleTimeEvent,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String email)  emailChanged,required TResult Function( String password)  passwordChanged,required TResult Function()  submitPressed,required TResult Function()  signInWithGooglePressed,required TResult Function()  forgotPasswordPressed,required TResult Function()  clearForm,required TResult Function()  clearSingleTimeEvent,}) {final _that = this;
 switch (_that) {
 case _EmailChanged():
 return emailChanged(_that.email);case _PasswordChanged():
 return passwordChanged(_that.password);case _SubmitPressed():
 return submitPressed();case _SignInWithGooglePressed():
-return signInWithGooglePressed();case _ClearForm():
+return signInWithGooglePressed();case _ForgotPasswordPressed():
+return forgotPasswordPressed();case _ClearForm():
 return clearForm();case _ClearSingleTimeEvent():
 return clearSingleTimeEvent();case _:
   throw StateError('Unexpected subclass');
@@ -185,13 +190,14 @@ return clearSingleTimeEvent();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String email)?  emailChanged,TResult? Function( String password)?  passwordChanged,TResult? Function()?  submitPressed,TResult? Function()?  signInWithGooglePressed,TResult? Function()?  clearForm,TResult? Function()?  clearSingleTimeEvent,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String email)?  emailChanged,TResult? Function( String password)?  passwordChanged,TResult? Function()?  submitPressed,TResult? Function()?  signInWithGooglePressed,TResult? Function()?  forgotPasswordPressed,TResult? Function()?  clearForm,TResult? Function()?  clearSingleTimeEvent,}) {final _that = this;
 switch (_that) {
 case _EmailChanged() when emailChanged != null:
 return emailChanged(_that.email);case _PasswordChanged() when passwordChanged != null:
 return passwordChanged(_that.password);case _SubmitPressed() when submitPressed != null:
 return submitPressed();case _SignInWithGooglePressed() when signInWithGooglePressed != null:
-return signInWithGooglePressed();case _ClearForm() when clearForm != null:
+return signInWithGooglePressed();case _ForgotPasswordPressed() when forgotPasswordPressed != null:
+return forgotPasswordPressed();case _ClearForm() when clearForm != null:
 return clearForm();case _ClearSingleTimeEvent() when clearSingleTimeEvent != null:
 return clearSingleTimeEvent();case _:
   return null;
@@ -389,6 +395,38 @@ int get hashCode => runtimeType.hashCode;
 @override
 String toString() {
   return 'LoginEvent.signInWithGooglePressed()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class _ForgotPasswordPressed implements LoginEvent {
+  const _ForgotPasswordPressed();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ForgotPasswordPressed);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'LoginEvent.forgotPasswordPressed()';
 }
 
 

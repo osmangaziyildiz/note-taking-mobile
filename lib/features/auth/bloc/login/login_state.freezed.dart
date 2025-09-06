@@ -360,12 +360,13 @@ extension LoginSingleTimeEventPatterns on LoginSingleTimeEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _NavigateToHome value)?  navigateToHome,TResult Function( _ShowErrorDialog value)?  showErrorDialog,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _NavigateToHome value)?  navigateToHome,TResult Function( _ShowErrorDialog value)?  showErrorDialog,TResult Function( _ShowSuccessDialog value)?  showSuccessDialog,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _NavigateToHome() when navigateToHome != null:
 return navigateToHome(_that);case _ShowErrorDialog() when showErrorDialog != null:
-return showErrorDialog(_that);case _:
+return showErrorDialog(_that);case _ShowSuccessDialog() when showSuccessDialog != null:
+return showSuccessDialog(_that);case _:
   return orElse();
 
 }
@@ -383,12 +384,13 @@ return showErrorDialog(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _NavigateToHome value)  navigateToHome,required TResult Function( _ShowErrorDialog value)  showErrorDialog,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _NavigateToHome value)  navigateToHome,required TResult Function( _ShowErrorDialog value)  showErrorDialog,required TResult Function( _ShowSuccessDialog value)  showSuccessDialog,}){
 final _that = this;
 switch (_that) {
 case _NavigateToHome():
 return navigateToHome(_that);case _ShowErrorDialog():
-return showErrorDialog(_that);case _:
+return showErrorDialog(_that);case _ShowSuccessDialog():
+return showSuccessDialog(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -405,12 +407,13 @@ return showErrorDialog(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _NavigateToHome value)?  navigateToHome,TResult? Function( _ShowErrorDialog value)?  showErrorDialog,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _NavigateToHome value)?  navigateToHome,TResult? Function( _ShowErrorDialog value)?  showErrorDialog,TResult? Function( _ShowSuccessDialog value)?  showSuccessDialog,}){
 final _that = this;
 switch (_that) {
 case _NavigateToHome() when navigateToHome != null:
 return navigateToHome(_that);case _ShowErrorDialog() when showErrorDialog != null:
-return showErrorDialog(_that);case _:
+return showErrorDialog(_that);case _ShowSuccessDialog() when showSuccessDialog != null:
+return showSuccessDialog(_that);case _:
   return null;
 
 }
@@ -427,11 +430,12 @@ return showErrorDialog(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  navigateToHome,TResult Function( String message)?  showErrorDialog,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  navigateToHome,TResult Function( String message)?  showErrorDialog,TResult Function( String message)?  showSuccessDialog,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _NavigateToHome() when navigateToHome != null:
 return navigateToHome();case _ShowErrorDialog() when showErrorDialog != null:
-return showErrorDialog(_that.message);case _:
+return showErrorDialog(_that.message);case _ShowSuccessDialog() when showSuccessDialog != null:
+return showSuccessDialog(_that.message);case _:
   return orElse();
 
 }
@@ -449,11 +453,12 @@ return showErrorDialog(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  navigateToHome,required TResult Function( String message)  showErrorDialog,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  navigateToHome,required TResult Function( String message)  showErrorDialog,required TResult Function( String message)  showSuccessDialog,}) {final _that = this;
 switch (_that) {
 case _NavigateToHome():
 return navigateToHome();case _ShowErrorDialog():
-return showErrorDialog(_that.message);case _:
+return showErrorDialog(_that.message);case _ShowSuccessDialog():
+return showSuccessDialog(_that.message);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -470,11 +475,12 @@ return showErrorDialog(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  navigateToHome,TResult? Function( String message)?  showErrorDialog,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  navigateToHome,TResult? Function( String message)?  showErrorDialog,TResult? Function( String message)?  showSuccessDialog,}) {final _that = this;
 switch (_that) {
 case _NavigateToHome() when navigateToHome != null:
 return navigateToHome();case _ShowErrorDialog() when showErrorDialog != null:
-return showErrorDialog(_that.message);case _:
+return showErrorDialog(_that.message);case _ShowSuccessDialog() when showSuccessDialog != null:
+return showSuccessDialog(_that.message);case _:
   return null;
 
 }
@@ -572,6 +578,72 @@ class __$ShowErrorDialogCopyWithImpl<$Res>
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') $Res call({Object? message = null,}) {
   return _then(_ShowErrorDialog(
+null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class _ShowSuccessDialog implements LoginSingleTimeEvent {
+  const _ShowSuccessDialog(this.message);
+  
+
+ final  String message;
+
+/// Create a copy of LoginSingleTimeEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$ShowSuccessDialogCopyWith<_ShowSuccessDialog> get copyWith => __$ShowSuccessDialogCopyWithImpl<_ShowSuccessDialog>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ShowSuccessDialog&&(identical(other.message, message) || other.message == message));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,message);
+
+@override
+String toString() {
+  return 'LoginSingleTimeEvent.showSuccessDialog(message: $message)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$ShowSuccessDialogCopyWith<$Res> implements $LoginSingleTimeEventCopyWith<$Res> {
+  factory _$ShowSuccessDialogCopyWith(_ShowSuccessDialog value, $Res Function(_ShowSuccessDialog) _then) = __$ShowSuccessDialogCopyWithImpl;
+@useResult
+$Res call({
+ String message
+});
+
+
+
+
+}
+/// @nodoc
+class __$ShowSuccessDialogCopyWithImpl<$Res>
+    implements _$ShowSuccessDialogCopyWith<$Res> {
+  __$ShowSuccessDialogCopyWithImpl(this._self, this._then);
+
+  final _ShowSuccessDialog _self;
+  final $Res Function(_ShowSuccessDialog) _then;
+
+/// Create a copy of LoginSingleTimeEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? message = null,}) {
+  return _then(_ShowSuccessDialog(
 null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
 as String,
   ));

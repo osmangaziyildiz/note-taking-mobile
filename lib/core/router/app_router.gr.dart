@@ -11,6 +11,22 @@
 part of 'app_router.dart';
 
 /// generated route for
+/// [EmailVerificationScreen]
+class EmailVerificationRoute extends PageRouteInfo<void> {
+  const EmailVerificationRoute({List<PageRouteInfo>? children})
+    : super(EmailVerificationRoute.name, initialChildren: children);
+
+  static const String name = 'EmailVerificationRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const EmailVerificationScreen();
+    },
+  );
+}
+
+/// generated route for
 /// [HomeScreen]
 class HomeRoute extends PageRouteInfo<void> {
   const HomeRoute({List<PageRouteInfo>? children})

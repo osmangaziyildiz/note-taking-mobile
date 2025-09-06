@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:notetakingapp/core/router/auth_guard.dart';
+import 'package:notetakingapp/features/auth/screen/email_verification_screen.dart';
 import 'package:notetakingapp/features/auth/screen/login_screen.dart';
 import 'package:notetakingapp/features/auth/screen/register_screen.dart';
 import 'package:notetakingapp/features/home/screen/home_screen.dart';
@@ -17,6 +18,7 @@ class AppRouter extends RootStackRouter {
   List<AutoRoute> get routes => [
         AutoRoute(page: LoginRoute.page, path: '/login'),
         AutoRoute(page: RegisterRoute.page, path: '/register'),
+        AutoRoute(page: EmailVerificationRoute.page, path: '/email-verification'),
         AutoRoute(page: HomeRoute.page, path: '/home', initial: true, guards: [AuthGuard()])
       ];
 
