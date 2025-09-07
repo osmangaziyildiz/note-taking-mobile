@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:notetakingapp/core/localization/localization_manager.dart';
 import 'package:notetakingapp/core/router/app_router.dart';
 import 'package:notetakingapp/core/theme/app_colors.dart';
 import 'package:notetakingapp/core/utils/snackbar_helper.dart';
@@ -54,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     showErrorDialog: (message) {
                       SnackbarHelper.showError(
                         context: context,
-                        title: 'Login Failed',
+                        title: 'Login Failed'.localized,
                         message: message,
                       );
                       context.read<LoginBloc>().clearSingleTimeEvent();
@@ -62,7 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     showSuccessDialog: (message) {
                       SnackbarHelper.showSuccess(
                         context: context,
-                        title: 'Success',
+                        title: 'Success'.localized,
                         message: message,
                       );
                       context.read<LoginBloc>().clearSingleTimeEvent();
@@ -83,7 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 // Welcome Back Title
                 Text(
-                  'Welcome Back',
+                  'Welcome Back'.localized,
                   style: TextStyle(
                     fontSize: 32.sp,
                     fontWeight: FontWeight.bold,
@@ -94,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 // Subtitle
                 Text(
-                  'Sign in to continue to your notes.',
+                  'Sign in to continue to your notes.'.localized,
                   style: TextStyle(
                     fontSize: 16.sp,
                   ),
@@ -105,7 +106,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 // Social Auth Buttons
                 SocialAuthButton(
                   iconPath: 'assets/icons/google_icon.png',
-                  label: 'Continue with Google',
+                  label: 'Continue with Google'.localized,
                   onPressed: () {
                     context.read<LoginBloc>().add(
                       const LoginEvent.signInWithGooglePressed(),

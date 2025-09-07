@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:notetakingapp/core/localization/localization_manager.dart';
 
 class AuthTextField extends StatelessWidget {
   const AuthTextField({
@@ -36,11 +37,11 @@ class AuthTextField extends StatelessWidget {
         fontSize: 16.sp,
       ),
       decoration: InputDecoration(
-        hintText: hintText,
+        hintText: hintText.localized,
         hintStyle: TextStyle(
           fontSize: 16.sp,
         ),
-        errorText: errorText,
+        errorText: errorText?.localized,
         contentPadding: EdgeInsets.symmetric(
           horizontal: 16.w,
           vertical: 16.h,

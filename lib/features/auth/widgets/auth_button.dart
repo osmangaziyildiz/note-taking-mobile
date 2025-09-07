@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:notetakingapp/core/localization/localization_manager.dart';
 
 class AuthButton extends StatelessWidget {
   const AuthButton({
@@ -37,7 +38,7 @@ class AuthButton extends StatelessWidget {
                 ),
               )
             : Text(
-                text,
+                text.localized,
                 style: TextStyle(
                   fontSize: 16.sp,
                   fontWeight: FontWeight.w600,

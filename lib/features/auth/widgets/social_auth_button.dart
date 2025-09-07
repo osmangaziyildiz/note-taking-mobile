@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:notetakingapp/core/localization/localization_manager.dart';
 import 'package:notetakingapp/core/theme/app_colors.dart';
 
 class SocialAuthButton extends StatelessWidget {
@@ -37,7 +38,7 @@ class SocialAuthButton extends StatelessWidget {
             ),
             SizedBox(width: 12.w),
             Text(
-              label,
+              label.localized,
               style: TextStyle(
                 fontSize: 16.sp,
                 fontWeight: FontWeight.w500,

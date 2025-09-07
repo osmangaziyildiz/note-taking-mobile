@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notetakingapp/core/di/service_locator.dart';
-import 'package:notetakingapp/core/localization/localization_manager.dart';
 import 'package:notetakingapp/core/repositories/note_repository.dart';
 import 'package:notetakingapp/features/home/bloc/home_bloc.dart';
 import 'package:notetakingapp/features/home/bloc/home_event.dart';

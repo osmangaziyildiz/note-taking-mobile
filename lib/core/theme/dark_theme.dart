@@ -4,7 +4,7 @@ import 'package:notetakingapp/core/theme/app_colors.dart';
 ThemeData darkTheme = ThemeData(
   brightness: Brightness.dark,
   useMaterial3: true,
-  scaffoldBackgroundColor: AppColors.darkBackground,
+  scaffoldBackgroundColor: AppColors.scaffoldBackgroundColor,
   hintColor: AppColors.darkTextColor,
   primaryColorLight: AppColors.darkButtonBackground,
   textTheme: ThemeData.dark().textTheme.apply(

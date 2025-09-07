@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notetakingapp/core/di/service_locator.dart';
+import 'package:notetakingapp/core/localization/localization_manager.dart';
 import 'package:notetakingapp/core/utils/snackbar_helper.dart';
 import 'package:notetakingapp/features/note/bloc/edit/note_edit_bloc.dart';
 import 'package:notetakingapp/features/note/bloc/edit/note_edit_event.dart';
@@ -39,22 +40,22 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
   }
 
   void _showDeleteConfirmationDialog(NoteEditBloc bloc) {
-    showDialog(
+    showDialog<void>(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: const Color(0xFF2C2C2C),
-          title: const Text(
-            'Delete Note',
-            style: TextStyle(
+          title:  Text(
+            'Delete Note'.localized,
+            style: const TextStyle(
               color: Colors.white,
               fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
           ),
-          content: const Text(
-            'Are you sure you want to delete this note? This action cannot be undone.',
-            style: TextStyle(
+          content: Text(
+            'Are you sure you want to delete this note? This action cannot be undone.'.localized,
+            style: const TextStyle(
               color: Colors.grey,
               fontSize: 16,
             ),
@@ -62,9 +63,9 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text(
-                'Cancel',
-                style: TextStyle(
+              child: Text(
+                'Cancel'.localized,
+                style: const TextStyle(
                   color: Colors.grey,
                   fontSize: 16,
                 ),
@@ -93,9 +94,9 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
                             ),
                           ),
                         )
-                      : const Text(
-                          'Delete',
-                          style: TextStyle(
+                      : Text(
+                          'Delete'.localized,
+                          style: const TextStyle(
                             color: Colors.red,
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
@@ -125,7 +126,7 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
             showErrorDialog: (message) {
               SnackbarHelper.showError(
                 context: context,
-                title: 'Error',
+                title: 'Error'.localized,
                 message: message,
               );
               context.read<NoteEditBloc>().clearSingleTimeEvent();
@@ -133,7 +134,7 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
             showSuccessDialog: (message) {
               SnackbarHelper.showSuccess(
                 context: context,
-                title: 'Success',
+                title: 'Success'.localized,
                 message: message,
               );
               // Navigate back after showing success message              
@@ -186,9 +187,9 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
               backgroundColor: const Color(0xFF1E1E1E),
               foregroundColor: Colors.white,
               elevation: 0,
-              title: const Text(
-                'Edit Note',
-                style: TextStyle(
+              title: Text(
+                'Edit Note'.localized,
+                style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
@@ -247,9 +248,9 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
                                 ),
                               ),
                             )
-                          : const Text(
-                              'Save',
-                              style: TextStyle(
+                          : Text(
+                              'Save'.localized,
+                              style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
                                 color: Colors.white,
@@ -292,9 +293,9 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
                               fontWeight: FontWeight.w600,
                               color: Colors.white,
                             ),
-                            decoration: const InputDecoration(
-                              hintText: 'Note title...',
-                              hintStyle: TextStyle(
+                            decoration: InputDecoration(
+                              hintText: 'Note title...'.localized,
+                              hintStyle: const TextStyle(
                                 color: Colors.grey,
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
@@ -321,9 +322,9 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
                                 color: Colors.white,
                                 height: 1.5,
                               ),
-                              decoration: const InputDecoration(
-                                hintText: 'Start writing your note...',
-                                hintStyle: TextStyle(
+                              decoration: InputDecoration(
+                                hintText: 'Start writing your note...'.localized,
+                                hintStyle: const TextStyle(
                                   color: Colors.grey,
                                   fontSize: 16,
                                 ),

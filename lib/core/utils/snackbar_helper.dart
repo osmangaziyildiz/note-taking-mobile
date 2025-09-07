@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:notetakingapp/core/localization/localization_manager.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
@@ -11,7 +12,7 @@ class SnackbarHelper {
     showTopSnackBar(
       Overlay.of(context),
       CustomSnackBar.success(
-        message: message,
+        message: message.localized,
       ),
     );
   }
@@ -24,7 +25,7 @@ class SnackbarHelper {
     showTopSnackBar(
       Overlay.of(context),
       CustomSnackBar.error(
-        message: message,
+        message: message.localized,
       ),
     );
   }
@@ -37,7 +38,7 @@ class SnackbarHelper {
     showTopSnackBar(
       Overlay.of(context),
       CustomSnackBar.info(
-        message: message,
+        message: message.localized,
       ),
     );
   }
@@ -50,7 +51,7 @@ class SnackbarHelper {
     showTopSnackBar(
       Overlay.of(context),
       CustomSnackBar.info(
-        message: message,
+        message: message.localized,
       ),
     );
   }

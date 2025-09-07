@@ -5,6 +5,7 @@ class AppColors {
   static Color white = const Color(0xFFFFFFFF);
   static Color grey = const Color(0xFF8E8E93);
   static Color black = const Color(0xFF000000);
+  static Color scaffoldBackgroundColor = const Color(0xFF1C1C1E);
 
   // Light Theme Colors
   static Color lightBackground = white;

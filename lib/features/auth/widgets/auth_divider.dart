@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:notetakingapp/core/localization/localization_manager.dart';
 import 'package:notetakingapp/core/theme/app_colors.dart';
 
 class AuthDivider extends StatelessWidget {
@@ -18,7 +19,7 @@ class AuthDivider extends StatelessWidget {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w),
           child: Text(
-            'or',
+            'or'.localized,
             style: TextStyle(
               fontSize: 14.sp,
             ),

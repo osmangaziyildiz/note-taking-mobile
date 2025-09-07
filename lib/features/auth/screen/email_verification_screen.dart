@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notetakingapp/core/di/service_locator.dart';
+import 'package:notetakingapp/core/localization/localization_manager.dart';
 import 'package:notetakingapp/core/router/app_router.dart';
 import 'package:notetakingapp/core/utils/snackbar_helper.dart';
 import 'package:notetakingapp/features/auth/bloc/register/register_bloc.dart';
@@ -22,7 +23,7 @@ class EmailVerificationScreen extends StatelessWidget {
             showErrorDialog: (message) {
               SnackbarHelper.showError(
                 context: context,
-                title: 'Error',
+                title: 'Error'.localized,
                 message: message,
               );
               context.read<RegisterBloc>().clearSingleTimeEvent();
@@ -30,7 +31,7 @@ class EmailVerificationScreen extends StatelessWidget {
             showSuccessDialog: (message) {
               SnackbarHelper.showSuccess(
                 context: context,
-                title: 'Success',
+                title: 'Success'.localized,
                 message: message,
               );
               context.read<RegisterBloc>().clearSingleTimeEvent();
@@ -71,9 +72,9 @@ class EmailVerificationScreen extends StatelessWidget {
                   const SizedBox(height: 32),
 
                   // Title
-                  const Text(
-                    'Check Your Email',
-                    style: TextStyle(
+                  Text(
+                    'Check Your Email'.localized,
+                    style: const TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
@@ -84,7 +85,7 @@ class EmailVerificationScreen extends StatelessWidget {
 
                   // Description
                   Text(
-                    'We\'ve sent a verification link to your email address. Please check your inbox and click the link to verify your account.',
+                    "We've sent a verification link to your email address. Please check your inbox and click the link to verify your account.".localized,
                     style: TextStyle(
                       fontSize: 16,
                       color: Colors.grey[400],
@@ -127,9 +128,9 @@ class EmailVerificationScreen extends StatelessWidget {
                                     ),
                                   ),
                                 )
-                              : const Text(
-                                  'I\'ve Verified My Email',
-                                  style: TextStyle(
+                              : Text(
+                                  "I've Verified My Email".localized,
+                                  style: const TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w600,
                                   ),
@@ -164,9 +165,9 @@ class EmailVerificationScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(12),
                             ),
                           ),
-                          child: const Text(
-                            'Resend Verification Email',
-                            style: TextStyle(
+                          child: Text(
+                            'Resend Verification Email'.localized,
+                            style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
                             ),
@@ -183,7 +184,7 @@ class EmailVerificationScreen extends StatelessWidget {
                       context.router.replaceAll([const LoginRoute()]);
                     },
                     child: Text(
-                      'Back to Login',
+                      'Back to Login'.localized,
                       style: TextStyle(
                         fontSize: 16,
                         color: Colors.grey[400],

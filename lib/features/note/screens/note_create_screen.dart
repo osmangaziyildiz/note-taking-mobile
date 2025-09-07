@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notetakingapp/core/di/service_locator.dart';
+import 'package:notetakingapp/core/localization/localization_manager.dart';
 import 'package:notetakingapp/core/utils/snackbar_helper.dart';
 import 'package:notetakingapp/features/note/bloc/create/note_create_bloc.dart';
 import 'package:notetakingapp/features/note/bloc/create/note_create_event.dart';
@@ -57,7 +58,7 @@ class _NoteCreateScreenState extends State<NoteCreateScreen> {
             showErrorDialog: (message) {
               SnackbarHelper.showError(
                 context: context,
-                title: 'Error',
+                title: 'Error'.localized,
                 message: message,
               );
               context.read<NoteCreateBloc>().clearSingleTimeEvent();
@@ -65,7 +66,7 @@ class _NoteCreateScreenState extends State<NoteCreateScreen> {
             showSuccessDialog: (message) {
               SnackbarHelper.showSuccess(
                 context: context,
-                title: 'Success',
+                title: 'Success'.localized,
                 message: message,
               );
               // Navigate back after showing success message
@@ -85,9 +86,9 @@ class _NoteCreateScreenState extends State<NoteCreateScreen> {
             backgroundColor: const Color(0xFF1E1E1E),
             foregroundColor: Colors.white,
             elevation: 0,
-            title: const Text(
-              'Create Note',
-              style: TextStyle(
+            title: Text(
+              'Create Note'.localized,
+              style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
@@ -113,9 +114,9 @@ class _NoteCreateScreenState extends State<NoteCreateScreen> {
                               valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                             ),
                           )
-                        : const Text(
-                            'Save',
-                            style: TextStyle(
+                        : Text(
+                            'Save'.localized,
+                            style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
                               color: Colors.white,
@@ -145,9 +146,9 @@ class _NoteCreateScreenState extends State<NoteCreateScreen> {
                         fontWeight: FontWeight.w600,
                         color: Colors.white,
                       ),
-                      decoration: const InputDecoration(
-                        hintText: 'Note title...',
-                        hintStyle: TextStyle(
+                      decoration: InputDecoration(
+                        hintText: 'Note title...'.localized,
+                        hintStyle: const TextStyle(
                           color: Colors.grey,
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
@@ -174,9 +175,9 @@ class _NoteCreateScreenState extends State<NoteCreateScreen> {
                           color: Colors.white,
                           height: 1.5,
                         ),
-                        decoration: const InputDecoration(
-                          hintText: 'Start writing your note...',
-                          hintStyle: TextStyle(
+                        decoration: InputDecoration(
+                          hintText: 'Start writing your note...'.localized,
+                          hintStyle: const TextStyle(
                             color: Colors.grey,
                             fontSize: 16,
                           ),

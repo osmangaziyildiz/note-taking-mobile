@@ -67,7 +67,6 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ],
       child: const Scaffold(
-        backgroundColor: Color(0xFF1E1E1E),
         body: SafeArea(
           child: Padding(
             padding: EdgeInsets.all(16),
