@@ -46,6 +46,16 @@ class DioService {
         },
       ),
     );
+
+    _dio.interceptors.add(
+      LogInterceptor(
+        request: false,
+        responseBody: true,
+        responseHeader: false,
+        requestHeader: false,
+        requestBody: true,
+      ),
+    );
   }
 
   // Get auth token - Firebase ID token

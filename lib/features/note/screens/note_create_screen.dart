@@ -68,6 +68,10 @@ class _NoteCreateScreenState extends State<NoteCreateScreen> {
                 title: 'Success',
                 message: message,
               );
+              // Navigate back after showing success message
+              if (mounted) {
+                context.router.maybePop();
+              }
               context.read<NoteCreateBloc>().clearSingleTimeEvent();
             },
             navigateToHome: () {
