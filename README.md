@@ -120,8 +120,12 @@ lib/
    - Add SHA-1 fingerprint for Android
 
 6. **Configure Gemini API**
+   - Copy `.env.example` to `.env`
    - Obtain API key from Google AI Studio
-   - Add API key to environment variables
+   - Add your API key to `.env` file:
+     ```
+     GEMINI_API_KEY=your_actual_api_key_here
+     ```
 
 7. **Run the application**
    ```bash

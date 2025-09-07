@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:notetakingapp/core/di/service_locator.dart';
@@ -22,6 +23,9 @@ void main() async {
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
+  // Load environment variables
+  await dotenv.load(fileName: ".env");
+
   // Initialize LocalizationManager
   await LocalizationManager.init();
 
@@ -35,7 +39,7 @@ void main() async {
 
   // Initialize Gemini service
   sl.get<GeminiService>().initialize(
-    apiKey: 'AIzaSyDd3Oi_P5zDCrSii8oL1the5IJdaZqwI-0',
+    apiKey: dotenv.env['GEMINI_API_KEY'] ?? '',
   );
 
   // Initialize ScreenUtil

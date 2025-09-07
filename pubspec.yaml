@@ -41,6 +41,7 @@ dependencies:
   path_provider: ^2.1.5
   path: ^1.9.1
   flutter_gemini: ^3.0.0
+  flutter_dotenv: ^6.0.0
 
 dev_dependencies:
   flutter_test:
@@ -61,3 +62,4 @@ flutter:
   assets:
     - assets/localization/
     - assets/icons/
+    - .env
