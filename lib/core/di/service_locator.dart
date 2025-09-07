@@ -2,9 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:notetakingapp/core/database/database.dart';
+import 'package:notetakingapp/core/network/connection_service.dart';
 import 'package:notetakingapp/core/network/dio_service.dart';
 import 'package:notetakingapp/core/repositories/note_repository.dart';
 import 'package:notetakingapp/core/repositories/note_repository_impl.dart';
+import 'package:notetakingapp/core/services/local_note_service.dart';
 import 'package:notetakingapp/core/theme/bloc/theme_bloc.dart';
 import 'package:notetakingapp/features/auth/bloc/auth/auth_bloc.dart';
 import 'package:notetakingapp/features/auth/bloc/login/login_bloc.dart';
@@ -23,6 +26,9 @@ Future<void> initServiceLocator() async {
     ..registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance)
     ..registerLazySingleton<GoogleSignIn>(() => GoogleSignIn.instance)
     ..registerLazySingleton<FirebaseFirestore>(() => FirebaseFirestore.instance)
+    ..registerLazySingleton<ConnectionService>(() => ConnectionService()..initialize())
+    ..registerLazySingleton<AppDatabase>(() => AppDatabase())
+    ..registerLazySingleton<LocalNoteService>(() => LocalNoteService(sl()))
     ..registerLazySingleton<DioService>(() => DioService()..initialize(authRepository: sl()))
     // Repositories
     ..registerLazySingleton<AuthRepository>(
@@ -35,6 +41,9 @@ Future<void> initServiceLocator() async {
     ..registerLazySingleton<NoteRepository>(
       () => NoteRepositoryImpl(
         dioService: sl(),
+        localNoteService: sl(),
+        connectionService: sl(),
+        authRepository: sl(),
       ),
     )
     // Blocs

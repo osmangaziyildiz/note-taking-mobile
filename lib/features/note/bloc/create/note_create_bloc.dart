@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notetakingapp/core/di/service_locator.dart';
+import 'package:notetakingapp/core/localization/localization_manager.dart';
 import 'package:notetakingapp/core/repositories/note_repository.dart';
 import 'package:notetakingapp/features/home/bloc/home_bloc.dart';
 import 'package:notetakingapp/features/home/bloc/home_event.dart';
@@ -7,7 +8,6 @@ import 'package:notetakingapp/features/note/bloc/create/note_create_event.dart';
 import 'package:notetakingapp/features/note/bloc/create/note_create_state.dart';
 
 class NoteCreateBloc extends Bloc<NoteCreateEvent, NoteCreateState> {
-  final NoteRepository _noteRepository;
 
   NoteCreateBloc({
     required NoteRepository noteRepository,
@@ -15,6 +15,7 @@ class NoteCreateBloc extends Bloc<NoteCreateEvent, NoteCreateState> {
         super(const NoteCreateState()) {
     on<NoteCreateEvent>(_onNoteCreateEvent);
   }
+  final NoteRepository _noteRepository;
 
   Future<void> _onNoteCreateEvent(
     NoteCreateEvent event,
@@ -72,16 +73,17 @@ class NoteCreateBloc extends Bloc<NoteCreateEvent, NoteCreateState> {
         singleTimeEvent: NoteCreateSingleTimeEvent.showErrorDialog(error),
       )),
       (note) {
-        print('✅ Note created successfully: ${note.title}');
         
         // Notify HomeBloc to add the new note to its state
-        final homeBloc = sl.get<HomeBloc>();
-        homeBloc.add(HomeEvent.addNote(note));
+        sl.get<HomeBloc>()
+        .add(HomeEvent.addNote(note));
         
         emit(state.copyWith(
           isLoading: false,
           isSuccess: true,
-          singleTimeEvent: const NoteCreateSingleTimeEvent.navigateToHome(),
+          singleTimeEvent: const NoteCreateSingleTimeEvent.showSuccessDialog(
+            'Note created successfully!',
+          ),
         ));
       },
     );

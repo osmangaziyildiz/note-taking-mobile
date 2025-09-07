@@ -7,11 +7,10 @@ import 'package:notetakingapp/features/note/bloc/edit/note_edit_event.dart';
 import 'package:notetakingapp/features/note/bloc/edit/note_edit_state.dart';
 
 class NoteEditBloc extends Bloc<NoteEditEvent, NoteEditState> {
-
   NoteEditBloc({
     required NoteRepository noteRepository,
-  })  : _noteRepository = noteRepository,
-        super(const NoteEditState()) {
+  }) : _noteRepository = noteRepository,
+       super(const NoteEditState()) {
     on<NoteEditEvent>(_onNoteEditEvent);
   }
   final NoteRepository _noteRepository;
@@ -39,21 +38,25 @@ class NoteEditBloc extends Bloc<NoteEditEvent, NoteEditState> {
     result.fold(
       (error) {
         print('❌ Error loading note: $error');
-        emit(state.copyWith(
-          isLoading: false,
-          error: error,
-          singleTimeEvent: NoteEditSingleTimeEvent.showErrorDialog(error),
-        ));
+        emit(
+          state.copyWith(
+            isLoading: false,
+            error: error,
+            singleTimeEvent: NoteEditSingleTimeEvent.showErrorDialog(error),
+          ),
+        );
       },
       (note) {
         print('✅ Note loaded successfully: ${note.title}');
-        emit(state.copyWith(
-          isLoading: false,
-          note: note,
-          title: note.title,
-          content: note.content,
-          error: null,
-        ));
+        emit(
+          state.copyWith(
+            isLoading: false,
+            note: note,
+            title: note.title,
+            content: note.content,
+            error: null,
+          ),
+        );
       },
     );
   }
@@ -71,20 +74,24 @@ class NoteEditBloc extends Bloc<NoteEditEvent, NoteEditState> {
 
     // Validate form
     if (state.title.trim().isEmpty) {
-      emit(state.copyWith(
-        singleTimeEvent: const NoteEditSingleTimeEvent.showErrorDialog(
-          'Please enter a title for your note',
+      emit(
+        state.copyWith(
+          singleTimeEvent: const NoteEditSingleTimeEvent.showErrorDialog(
+            'Please enter a title for your note',
+          ),
         ),
-      ));
+      );
       return;
     }
 
     if (state.content.trim().isEmpty) {
-      emit(state.copyWith(
-        singleTimeEvent: const NoteEditSingleTimeEvent.showErrorDialog(
-          'Please enter content for your note',
+      emit(
+        state.copyWith(
+          singleTimeEvent: const NoteEditSingleTimeEvent.showErrorDialog(
+            'Please enter content for your note',
+          ),
         ),
-      ));
+      );
       return;
     }
 
@@ -97,37 +104,50 @@ class NoteEditBloc extends Bloc<NoteEditEvent, NoteEditState> {
     );
 
     result.fold(
-      (error) => emit(state.copyWith(
-        isLoading: false,
-        error: error,
-        singleTimeEvent: NoteEditSingleTimeEvent.showErrorDialog(error),
-      )),
-      (updatedNote) => emit(state.copyWith(
-        isLoading: false,
-        note: updatedNote,
-        isSuccess: true,
-        singleTimeEvent: const NoteEditSingleTimeEvent.navigateToHome(),
-      )),
+      (error) => emit(
+        state.copyWith(
+          isLoading: false,
+          error: error,
+          singleTimeEvent: NoteEditSingleTimeEvent.showErrorDialog(error),
+        ),
+      ),
+      (updatedNote) {
+        // Notify HomeBloc to remove the note from its state
+        sl.get<HomeBloc>().add(const HomeEvent.loadNotes());
+
+        emit(
+          state.copyWith(
+            isLoading: false,
+            note: updatedNote,
+            isSuccess: true,
+            singleTimeEvent: const NoteEditSingleTimeEvent.showSuccessDialog(
+              'Note updated successfully!',
+            ),
+          ),
+        );
+      },
     );
   }
 
   Future<void> _onDeletePressed(Emitter<NoteEditState> emit) async {
     if (state.note == null) return;
 
-    emit(state.copyWith(
-      singleTimeEvent: const NoteEditSingleTimeEvent.showDeleteConfirmation(),
-    ));
+    emit(
+      state.copyWith(
+        singleTimeEvent: const NoteEditSingleTimeEvent.showDeleteConfirmation(),
+      ),
+    );
   }
 
   Future<void> _onConfirmDelete(Emitter<NoteEditState> emit) async {
-    print('🗑️ Confirm delete called, note: ${state.note?.title ?? 'NULL'}');
     if (state.note == null) {
-      print('❌ Note is null, showing error dialog');
-      emit(state.copyWith(
-        singleTimeEvent: const NoteEditSingleTimeEvent.showErrorDialog(
-          'Note not found. Please try again.',
+      emit(
+        state.copyWith(
+          singleTimeEvent: const NoteEditSingleTimeEvent.showErrorDialog(
+            'Note not found. Please try again.',
+          ),
         ),
-      ));
+      );
       return;
     }
 
@@ -139,24 +159,29 @@ class NoteEditBloc extends Bloc<NoteEditEvent, NoteEditState> {
     result.fold(
       (error) {
         print('❌ Delete failed: $error');
-        emit(state.copyWith(
-          isDeleting: false,
-          error: error,
-          singleTimeEvent: NoteEditSingleTimeEvent.showErrorDialog(error),
-        ));
+        emit(
+          state.copyWith(
+            isDeleting: false,
+            error: error,
+            singleTimeEvent: NoteEditSingleTimeEvent.showErrorDialog(error),
+          ),
+        );
       },
       (success) {
         print('✅ Delete successful');
-        
+
         // Notify HomeBloc to remove the note from its state
-        final homeBloc = sl.get<HomeBloc>();
-        homeBloc.add(HomeEvent.removeNote(state.note!.id));
-        
-        emit(state.copyWith(
-          isDeleting: false,
-          isSuccess: true,
-          singleTimeEvent: const NoteEditSingleTimeEvent.navigateToHome(),
-        ));
+        sl.get<HomeBloc>().add(HomeEvent.removeNote(state.note!.id));
+
+        emit(
+          state.copyWith(
+            isDeleting: false,
+            isSuccess: true,
+            singleTimeEvent: const NoteEditSingleTimeEvent.showSuccessDialog(
+              'Note deleted successfully!',
+            ),
+          ),
+        );
       },
     );
   }

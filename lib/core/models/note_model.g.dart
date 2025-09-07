@@ -12,11 +12,17 @@ _NoteModel _$NoteModelFromJson(Map<String, dynamic> json) => _NoteModel(
   content: json['content'] as String,
   createdAt: DateTime.parse(json['created_at'] as String),
   updatedAt: DateTime.parse(json['updated_at'] as String),
-  ownerUid: json['owner_uid'] as String,
+  ownerUid: json['owner_uid'] as String?,
   isFavorite: json['is_favorite'] as bool? ?? false,
   tags:
       (json['tags'] as List<dynamic>?)?.map((e) => e as String).toList() ??
       const [],
+  syncStatus:
+      $enumDecodeNullable(_$SyncStatusEnumMap, json['syncStatus']) ??
+      SyncStatus.pending,
+  lastSyncedAt: json['lastSyncedAt'] == null
+      ? null
+      : DateTime.parse(json['lastSyncedAt'] as String),
 );
 
 Map<String, dynamic> _$NoteModelToJson(_NoteModel instance) =>
@@ -29,4 +35,11 @@ Map<String, dynamic> _$NoteModelToJson(_NoteModel instance) =>
       'owner_uid': instance.ownerUid,
       'is_favorite': instance.isFavorite,
       'tags': instance.tags,
+      'syncStatus': _$SyncStatusEnumMap[instance.syncStatus]!,
+      'lastSyncedAt': instance.lastSyncedAt?.toIso8601String(),
     };
+
+const _$SyncStatusEnumMap = {
+  SyncStatus.pending: 'pending',
+  SyncStatus.synced: 'synced',
+};
