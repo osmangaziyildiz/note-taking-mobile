@@ -6,8 +6,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:notetakingapp/core/di/service_locator.dart';
 import 'package:notetakingapp/core/localization/localization_manager.dart';
 import 'package:notetakingapp/core/router/app_router.dart';
+import 'package:notetakingapp/core/services/gemini_service.dart';
 import 'package:notetakingapp/core/theme/app_theme.dart';
 import 'package:notetakingapp/core/theme/bloc/theme_bloc.dart';
+import 'package:notetakingapp/features/ai/bloc/ai_bloc.dart';
 import 'package:notetakingapp/features/auth/bloc/auth/auth_bloc.dart';
 import 'package:notetakingapp/features/auth/bloc/auth/auth_event.dart';
 import 'package:notetakingapp/features/auth/bloc/login/login_bloc.dart';
@@ -30,6 +32,11 @@ void main() async {
 
   // Initialize service locator
   await initServiceLocator();
+
+  // Initialize Gemini service
+  sl.get<GeminiService>().initialize(
+    apiKey: 'AIzaSyDd3Oi_P5zDCrSii8oL1the5IJdaZqwI-0',
+  );
 
   // Initialize ScreenUtil
   await ScreenUtil.ensureScreenSize();
@@ -67,6 +74,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<NoteEditBloc>(
           create: (context) => sl.get<NoteEditBloc>(),
+        ),
+        BlocProvider<AiBloc>(
+          create: (context) => sl.get<AiBloc>(),
         ),
       ],
       child: ScreenUtilInit(

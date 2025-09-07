@@ -82,5 +82,15 @@
   "Don't have an account? ": "Hesabın yok mu?",
   "Register": "Kaydol",
   "Sign Up": "Kaydol",
-  "Already have an account? ": "Zaten bir hesabın var mı?"
+  "Already have an account? ": "Zaten bir hesabın var mı?",
+  "AI Assistant": "AI Asistanı",
+  "Type your message...": "Mesajınızı yazın...",
+  "Ask anything about your notes.": "Notlarınızla alakalı dilediğinizi sorun.",
+  "Your AI assistant will analyze all your notes\nand answer your questions.": "AI asistanınız tüm notlarınızı analiz ederek\nsorularınızı yanıtlayacak.",
+  "Analyzing your notes...": "Notlarınız analiz ediliyor...",
+  "Try Again": "Tekrar Dene",
+  "Chat History": "Sohbet Geçmişi",
+  "Your chat history will be lost. Are you sure you want to exit?": "Sohbet geçmişiniz kaybolacaktır. Çıkmak istediğinizden emin misiniz?",
+  "Exit": "Çık",
+  "Add Note": "Yeni Not Ekle"
 } 

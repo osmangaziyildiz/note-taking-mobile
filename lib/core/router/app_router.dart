@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:notetakingapp/core/router/auth_guard.dart';
+import 'package:notetakingapp/features/ai/screen/ai_assistant_screen.dart';
 import 'package:notetakingapp/features/auth/screen/email_verification_screen.dart';
 import 'package:notetakingapp/features/auth/screen/login_screen.dart';
 import 'package:notetakingapp/features/auth/screen/register_screen.dart';
@@ -26,6 +27,7 @@ class AppRouter extends RootStackRouter {
         AutoRoute(page: HomeRoute.page, path: '/home', initial: true, guards: [AuthGuard()]),
         AutoRoute(page: NoteCreateRoute.page, path: '/note/create', guards: [AuthGuard()]),
         AutoRoute(page: NoteEditRoute.page, path: '/note/edit/:noteId', guards: [AuthGuard()]),
+        AutoRoute(page: AiAssistantRoute.page, path: '/ai-assistant', guards: [AuthGuard()]),
         AutoRoute(page: SettingsRoute.page, path: '/settings', guards: [AuthGuard()]),
       ];
 

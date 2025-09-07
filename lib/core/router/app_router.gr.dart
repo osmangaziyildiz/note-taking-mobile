@@ -11,6 +11,22 @@
 part of 'app_router.dart';
 
 /// generated route for
+/// [AiAssistantScreen]
+class AiAssistantRoute extends PageRouteInfo<void> {
+  const AiAssistantRoute({List<PageRouteInfo>? children})
+    : super(AiAssistantRoute.name, initialChildren: children);
+
+  static const String name = 'AiAssistantRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const AiAssistantScreen();
+    },
+  );
+}
+
+/// generated route for
 /// [EmailVerificationScreen]
 class EmailVerificationRoute extends PageRouteInfo<void> {
   const EmailVerificationRoute({List<PageRouteInfo>? children})

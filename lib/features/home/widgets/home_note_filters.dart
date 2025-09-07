@@ -9,9 +9,9 @@ enum NoteFilter {
 
 class HomeNoteFilters extends StatelessWidget {
   const HomeNoteFilters({
-    super.key,
     required this.selectedFilter,
     required this.onFilterChanged,
+    super.key,
   });
 
   final NoteFilter selectedFilter;
@@ -31,8 +31,8 @@ class HomeNoteFilters extends StatelessWidget {
               child: Container(
                 margin: EdgeInsets.only(right: 8.w),
                 decoration: BoxDecoration(
-                  color: selectedFilter == NoteFilter.all 
-                      ? const Color(0xFFE53E3E) 
+                  color: selectedFilter == NoteFilter.all
+                      ? const Color(0xFFE53E3E)
                       : const Color(0xFF2C2C2C),
                   borderRadius: BorderRadius.circular(20),
                 ),
@@ -56,8 +56,8 @@ class HomeNoteFilters extends StatelessWidget {
               child: Container(
                 margin: EdgeInsets.only(left: 8.w),
                 decoration: BoxDecoration(
-                  color: selectedFilter == NoteFilter.favorites 
-                      ? const Color(0xFFE53E3E) 
+                  color: selectedFilter == NoteFilter.favorites
+                      ? const Color(0xFFE53E3E)
                       : const Color(0xFF2C2C2C),
                   borderRadius: BorderRadius.circular(20),
                 ),
@@ -67,8 +67,8 @@ class HomeNoteFilters extends StatelessWidget {
                     children: [
                       Icon(
                         Icons.star,
-                        color: selectedFilter == NoteFilter.favorites 
-                            ? Colors.amber 
+                        color: selectedFilter == NoteFilter.favorites
+                            ? Colors.amber
                             : Colors.grey,
                         size: 16.sp,
                       ),

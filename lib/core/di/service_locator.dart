@@ -9,8 +9,10 @@ import 'package:notetakingapp/core/repositories/local_note_repository.dart';
 import 'package:notetakingapp/core/repositories/note_repository.dart';
 import 'package:notetakingapp/core/repositories/note_repository_impl.dart';
 import 'package:notetakingapp/core/repositories/remote_note_repository.dart';
+import 'package:notetakingapp/core/services/gemini_service.dart';
 import 'package:notetakingapp/core/services/local_note_service.dart';
 import 'package:notetakingapp/core/theme/bloc/theme_bloc.dart';
+import 'package:notetakingapp/features/ai/bloc/ai_bloc.dart';
 import 'package:notetakingapp/features/auth/bloc/auth/auth_bloc.dart';
 import 'package:notetakingapp/features/auth/bloc/login/login_bloc.dart';
 import 'package:notetakingapp/features/auth/bloc/register/register_bloc.dart';
@@ -31,6 +33,7 @@ Future<void> initServiceLocator() async {
     ..registerLazySingleton<ConnectionService>(() => ConnectionService()..initialize())
     ..registerLazySingleton<AppDatabase>(AppDatabase.new)
     ..registerLazySingleton<LocalNoteService>(() => LocalNoteService(sl()))
+    ..registerLazySingleton<GeminiService>(GeminiService.new)
     ..registerLazySingleton<DioService>(() => DioService()..initialize(authRepository: sl()))
     // Repositories
     ..registerLazySingleton<AuthRepository>(
@@ -72,5 +75,11 @@ Future<void> initServiceLocator() async {
     )
     ..registerFactory<NoteEditBloc>(
       () => NoteEditBloc(noteRepository: sl()),
+    )
+    ..registerFactory<AiBloc>(
+      () => AiBloc(
+        geminiService: sl(),
+        localNoteRepository: sl(),
+      ),
     );
 }

@@ -82,5 +82,15 @@
   "Don't have an account? ": "Don't have an account? ",
   "Register": "Register",
   "Sign Up": "Sign Up",
-  "Already have an account? ": "Already have an account? "
+  "Already have an account? ": "Already have an account? ",
+  "AI Assistant": "AI Assistant",
+  "Type your message...": "Type your message...",
+  "Ask anything about your notes.": "Ask anything about your notes.",
+  "Your AI assistant will analyze all your notes\nand answer your questions.": "Your AI assistant will analyze all your notes\nand answer your questions.",
+  "Analyzing your notes...": "Analyzing your notes...",
+  "Try Again": "Try Again",
+  "Chat History": "Chat History",
+  "Your chat history will be lost. Are you sure you want to exit?": "Your chat history will be lost. Are you sure you want to exit?",
+  "Exit": "Exit",
+  "Add Note": "Add Note"
 } 

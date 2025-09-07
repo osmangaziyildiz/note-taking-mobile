@@ -9,7 +9,6 @@ import 'package:notetakingapp/features/auth/bloc/auth/auth_state.dart';
 import 'package:notetakingapp/features/home/bloc/home_bloc.dart';
 import 'package:notetakingapp/features/home/bloc/home_event.dart';
 import 'package:notetakingapp/features/home/bloc/home_state.dart';
-import 'package:notetakingapp/features/home/widgets/home_floating_action_button.dart';
 import 'package:notetakingapp/features/home/widgets/home_header.dart';
 import 'package:notetakingapp/features/home/widgets/home_note_filters.dart';
 import 'package:notetakingapp/features/home/widgets/home_notes_list.dart';
@@ -105,7 +104,34 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ),
-        floatingActionButton: const HomeFloatingActionButton(),
+        floatingActionButton: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            // AI Assistant button
+            FloatingActionButton.extended(
+              heroTag: 'ai_assistant',
+              onPressed: () {
+                context.router.push(const AiAssistantRoute());
+              },
+              icon: const Icon(Icons.psychology),
+              label: Text('AI Assistant'.localized),
+              backgroundColor: Colors.amber,
+              foregroundColor: Colors.white,
+            ),
+            const SizedBox(height: 12),
+            // Add New Note button
+            FloatingActionButton.extended(
+              heroTag: 'add_note',
+              onPressed: () {
+                context.router.push(const NoteCreateRoute());
+              },
+              icon: const Icon(Icons.add),
+              label: Text('Add Note'.localized),
+              backgroundColor: const Color(0xFFE53E3E),
+              foregroundColor: Colors.white,
+            ),
+          ],
+        ),
       ),
     );
   }

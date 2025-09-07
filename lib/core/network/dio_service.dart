@@ -13,6 +13,8 @@ class DioService {
   
   static const String _baseUrl = 'https://note-taking-backend-04jp.onrender.com';
 
+  static const String geminiApiKey = 'AIzaSyDd3Oi_P5zDCrSii8oL1the5IJdaZqwI-0';
+
   Dio get dio => _dio;
 
   void initialize({AuthRepository? authRepository}) {
