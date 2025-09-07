@@ -206,6 +206,52 @@ class NoteRepositoryImpl implements NoteRepository {
     }
   }
 
+  @override
+  Future<Either<String, NoteModel>> toggleNoteFavorite(String noteId) async {
+    try {
+      // Get note from local
+      final localResult = await _localNoteRepository.getNoteById(noteId);
+      if (localResult.isLeft()) {
+        return left('Note not found locally');
+      }
+
+      final existingNote = localResult.getOrElse((error) => null);
+      if (existingNote == null) {
+        return left('Note not found');
+      }
+
+      // Toggle favorite status
+      final updatedNote = existingNote.copyWith(
+        isFavorite: !existingNote.isFavorite,
+        updatedAt: DateTime.now(),
+        syncStatus: SyncStatus.pending, // Mark as pending for sync
+      );
+
+      // Update local
+      final saveResult = await _localNoteRepository.saveNote(updatedNote);
+      if (saveResult.isLeft()) {
+        return left(saveResult.getLeft().getOrElse(() => 'Unknown error'));
+      }
+
+      // If internet connection exists, send to server
+      if (_connectionService.isConnected) {
+        final favoriteResult = await _remoteNoteRepository.toggleNoteFavorite(
+          noteId, 
+          updatedNote.isFavorite,
+        );
+        if (favoriteResult.isRight()) {
+          final syncedNote = favoriteResult.getOrElse((error) => updatedNote);
+          // Update local with synced version
+          await _localNoteRepository.saveNote(syncedNote);
+          return right(syncedNote);
+        } else {}
+      } else {}
+      return right(updatedNote);
+    } on Exception catch (e) {
+      return left('Failed to toggle note favorite: $e');
+    }
+  }
+
   // Helper methods
   List<NoteModel> _mergeNotes(
     List<NoteModel> localNotes,

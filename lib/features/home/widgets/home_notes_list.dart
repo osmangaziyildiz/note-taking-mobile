@@ -2,10 +2,13 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:notetakingapp/core/localization/localization_manager.dart';
 import 'package:notetakingapp/core/models/note_model.dart';
 import 'package:notetakingapp/core/router/app_router.dart';
 import 'package:notetakingapp/features/home/bloc/home_bloc.dart';
+import 'package:notetakingapp/features/home/bloc/home_event.dart';
 import 'package:notetakingapp/features/home/bloc/home_state.dart';
+import 'package:notetakingapp/features/home/widgets/home_note_filters.dart';
 
 class HomeNotesList extends StatelessWidget {
   const HomeNotesList({super.key});
@@ -14,6 +17,9 @@ class HomeNotesList extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
+        // Filter notes based on selected filter
+        final filteredNotes = _filterNotes(state.notes, state.selectedFilter);
+        
         if (state.isLoading) {
           return const Center(
             child: CircularProgressIndicator(
@@ -22,19 +28,23 @@ class HomeNotesList extends StatelessWidget {
           );
         }
 
-        if (state.notes.isEmpty) {
+        if (filteredNotes.isEmpty) {
           return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(
-                  Icons.note_add_outlined,
+                  state.selectedFilter == NoteFilter.favorites 
+                      ? Icons.star_outline 
+                      : Icons.note_add_outlined,
                   size: 64.sp,
                   color: const Color(0xFF8E8E93),
                 ),
                 SizedBox(height: 16.h),
                 Text(
-                  'No notes yet',
+                  state.selectedFilter == NoteFilter.favorites 
+                      ? 'No favorite notes yet'.localized
+                      : 'No notes yet'.localized,
                   style: TextStyle(
                     fontSize: 18.sp,
                     fontWeight: FontWeight.w500,
@@ -42,7 +52,7 @@ class HomeNotesList extends StatelessWidget {
                 ),
                 SizedBox(height: 8.h),
                 Text(
-                  'Create your first note',
+                  'Add your first favorite note'.localized,
                   style: TextStyle(
                     fontSize: 14.sp,
                   ),
@@ -53,9 +63,9 @@ class HomeNotesList extends StatelessWidget {
         }
 
         return ListView.builder(
-          itemCount: state.notes.length,
+          itemCount: filteredNotes.length,
           itemBuilder: (context, index) {
-            final note = state.notes[index];
+            final note = filteredNotes[index];
             return _NoteCard(
               note: note,
               onTap: () {
@@ -66,6 +76,15 @@ class HomeNotesList extends StatelessWidget {
         );
       },
     );
+  }
+
+  List<NoteModel> _filterNotes(List<NoteModel> notes, NoteFilter filter) {
+    switch (filter) {
+      case NoteFilter.all:
+        return notes;
+      case NoteFilter.favorites:
+        return notes.where((note) => note.isFavorite).toList();
+    }
   }
 }
 
@@ -107,12 +126,16 @@ class _NoteCard extends StatelessWidget {
                   ),
                 ),
               ),
-              if (note.isFavorite)
-                Icon(
-                  Icons.favorite,
-                  color: const Color(0xFFE53E3E),
-                  size: 16.sp,
+              GestureDetector(
+                onTap: () {
+                  context.read<HomeBloc>().add(HomeEvent.toggleFavorite(note.id));
+                },
+                child: Icon(
+                  note.isFavorite ? Icons.star : Icons.star_border,
+                  color: note.isFavorite ? Colors.amber : Colors.grey,
+                  size: 25.sp,
                 ),
+              ),
             ],
           ),
           SizedBox(height: 8.h),
@@ -152,7 +175,7 @@ class _NoteCard extends StatelessWidget {
           ],
           SizedBox(height: 8.h),
           Text(
-            'Created: ${_formatDate(note.createdAt)}',
+            '${'Created:'.localized} ${_formatDate(note.createdAt)}',
             style: TextStyle(
               fontSize: 12.sp,
               color: const Color(0xFF8E8E93),
@@ -170,11 +193,11 @@ class _NoteCard extends StatelessWidget {
     final difference = now.difference(date);
 
     if (difference.inDays == 0) {
-      return 'Today';
+      return 'Today'.localized;
     } else if (difference.inDays == 1) {
-      return 'Yesterday';
+      return 'Yesterday'.localized;
     } else if (difference.inDays < 7) {
-      return '${difference.inDays} days ago';
+      return '${difference.inDays} days ago'.localized;
     } else {
       return '${date.day}/${date.month}/${date.year}';
     }

@@ -3,10 +3,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 extension LocalizedString on String {
+  // Example usage: Text('Hello'.localized) or 'Hello'.localized
   String get localized => LocalizationManager.getLocalizedString(this);
 }
 
 class LocalizationManager {
+  // Notifier: To rebuild the UI when the language changes
+  static final ValueNotifier<String?> localeNotifier = ValueNotifier<String?>(null);
   static const Map<String, String> _specialFallbacks = {
     'pt': 'pt-PT', // Use pt-PT if pt is used.
     'es': 'es-MX', // Use es-MX if es is used.
@@ -16,7 +19,7 @@ class LocalizationManager {
   static const List<String> _supportedLanguageFiles = [
     'tr-TR',
     'en-US',
-    // Future languages to be added:
+    // Future languages can be added:
     // 'de-DE',
     // 'fr-FR',
     // 'es-ES',
@@ -67,6 +70,7 @@ class LocalizationManager {
     // 1. Exact Match Check
     if (supportedLanguages.contains(locale)) {
       currentLanguage = locale;
+      localeNotifier.value = currentLanguage;
       debugPrint('🌍 Exact match found: $locale');
       return;
     }
@@ -79,6 +83,7 @@ class LocalizationManager {
       final fallbackLanguage = _specialFallbacks[base]!;
       if (supportedLanguages.contains(fallbackLanguage)) {
         currentLanguage = fallbackLanguage;
+        localeNotifier.value = currentLanguage;
         debugPrint('🔄 Special fallback used: $base -> $fallbackLanguage');
         return;
       }
@@ -87,12 +92,14 @@ class LocalizationManager {
     // 3. Base Language Code Check
     if (supportedLanguages.contains(base)) {
       currentLanguage = base;
+      localeNotifier.value = currentLanguage;
       debugPrint('🔤 Base language code used: $base');
       return;
     }
 
     // 4. Return to Default Language
     currentLanguage = _defaultLanguage;
+    localeNotifier.value = currentLanguage;
     debugPrint('🏠 Default language used: $_defaultLanguage');
   }
 
@@ -114,6 +121,7 @@ class LocalizationManager {
   static void changeLanguage(String languageCode) {
     if (supportedLanguages.contains(languageCode)) {
       currentLanguage = languageCode;
+      localeNotifier.value = currentLanguage;
       debugPrint('🔄 Language changed: $languageCode');
     } else {
       debugPrint('⚠️ Unsupported language: $languageCode');
@@ -128,17 +136,5 @@ class LocalizationManager {
   // Get the supported languages
   static Set<String> getSupportedLanguages() {
     return supportedLanguages;
-  }
-
-  // Debug for all translations
-  static void debugPrintTranslations() {
-    debugPrint('🔍 Current Translations:');
-    debugPrint('🌍 Current Language: $currentLanguage');
-    debugPrint('📚 Supported Languages: $supportedLanguages');
-    debugPrint('📝 Total Translation Count: ${translations.length}');
-    
-    translations.forEach((key, value) {
-      debugPrint('  "$key": $value');
-    });
   }
 }

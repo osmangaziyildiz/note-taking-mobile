@@ -8,6 +8,7 @@ import 'package:notetakingapp/core/network/connection_service.dart';
 import 'package:notetakingapp/core/services/local_note_service.dart';
 import 'package:notetakingapp/core/theme/app_colors.dart';
 import 'package:notetakingapp/core/theme/bloc/theme_bloc.dart';
+import 'package:notetakingapp/core/utils/snackbar_helper.dart';
 import 'package:notetakingapp/features/auth/bloc/auth/auth_bloc.dart';
 import 'package:notetakingapp/features/auth/bloc/auth/auth_event.dart';
 
@@ -164,10 +165,22 @@ class SettingsScreen extends StatelessWidget {
       builder: (context, snapshot) {
         final date = snapshot.data;
         final subtitle = _formatLastSync(date);
-        return ListTile(
-          leading: const Icon(Icons.sync),
-          title: Text('Last sync'.localized),
-          subtitle: Text(subtitle),
+        return Column(
+          children: [
+            ListTile(
+              leading: const Icon(Icons.sync),
+              title: Text('Last sync'.localized),
+              subtitle: Text(subtitle),
+              onTap: () {
+                SnackbarHelper.showInfo(
+                  context: context,
+                  title: 'Last sync'.localized,
+                  message: 'Your notes are automatically synced when needed.'
+                      .localized,
+                );
+              },
+            ),
+          ],
         );
       },
     );
@@ -237,9 +250,7 @@ class SettingsScreen extends StatelessWidget {
           child: Column(
             children: [
               for (int i = 0; i < children.length; i++) ...[
-                // Her satır
                 children[i],
-                // Sonuncu değilse divider
                 if (i != children.length - 1) const Divider(height: 1),
               ],
             ],
@@ -258,7 +269,6 @@ class SettingsScreen extends StatelessWidget {
     VoidCallback? onTap,
   }) {
     return ListTile(
-      leading: Icon(icon),
       title: Text(
         title.localized,
         style: TextStyle(fontSize: 16.sp),

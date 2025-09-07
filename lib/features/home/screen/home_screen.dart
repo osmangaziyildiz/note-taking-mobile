@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:notetakingapp/core/localization/localization_manager.dart';
 import 'package:notetakingapp/core/router/app_router.dart';
 import 'package:notetakingapp/core/utils/snackbar_helper.dart';
 import 'package:notetakingapp/features/auth/bloc/auth/auth_bloc.dart';
@@ -8,9 +9,9 @@ import 'package:notetakingapp/features/auth/bloc/auth/auth_state.dart';
 import 'package:notetakingapp/features/home/bloc/home_bloc.dart';
 import 'package:notetakingapp/features/home/bloc/home_event.dart';
 import 'package:notetakingapp/features/home/bloc/home_state.dart';
-import 'package:notetakingapp/features/home/widgets/home_category_filters.dart';
 import 'package:notetakingapp/features/home/widgets/home_floating_action_button.dart';
 import 'package:notetakingapp/features/home/widgets/home_header.dart';
+import 'package:notetakingapp/features/home/widgets/home_note_filters.dart';
 import 'package:notetakingapp/features/home/widgets/home_notes_list.dart';
 import 'package:notetakingapp/features/home/widgets/home_search_bar.dart';
 
@@ -47,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
               error: (message) {
                 SnackbarHelper.showError(
                   context: context,
-                  title: 'Error',
+                  title: 'Error'.localized,
                   message: message,
                 );
               },
@@ -59,41 +60,52 @@ class _HomeScreenState extends State<HomeScreen> {
             if (state.error != null) {
               SnackbarHelper.showError(
                 context: context,
-                title: 'Error',
+                title: 'Error'.localized,
                 message: state.error!,
               );
             }
           },
         ),
       ],
-      child: const Scaffold(
+      child: Scaffold(
         body: SafeArea(
           child: Padding(
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Header
-                HomeHeader(),
-                SizedBox(height: 20),
-                
+                const HomeHeader(),
+                const SizedBox(height: 20),
+
                 // Search Bar
-                HomeSearchBar(),
-                SizedBox(height: 20),
-                
-                // Category Filters
-                HomeCategoryFilters(),
-                SizedBox(height: 20),
-                
+                const HomeSearchBar(),
+                const SizedBox(height: 20),
+
+                // Note Filters
+                BlocBuilder<HomeBloc, HomeState>(
+                  builder: (context, state) {
+                    return HomeNoteFilters(
+                      selectedFilter: state.selectedFilter,
+                      onFilterChanged: (filter) {
+                        context.read<HomeBloc>().add(
+                          HomeEvent.changeFilter(filter),
+                        );
+                      },
+                    );
+                  },
+                ),
+                const SizedBox(height: 20),
+
                 // Notes List
-                Expanded(
+                const Expanded(
                   child: HomeNotesList(),
                 ),
               ],
             ),
           ),
         ),
-        floatingActionButton: HomeFloatingActionButton(),
+        floatingActionButton: const HomeFloatingActionButton(),
       ),
     );
   }

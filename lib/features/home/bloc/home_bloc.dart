@@ -5,6 +5,7 @@ import 'package:notetakingapp/core/network/connection_service.dart';
 import 'package:notetakingapp/core/repositories/note_repository.dart';
 import 'package:notetakingapp/features/home/bloc/home_event.dart';
 import 'package:notetakingapp/features/home/bloc/home_state.dart';
+import 'package:notetakingapp/features/home/widgets/home_note_filters.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
@@ -32,6 +33,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       loadNotes: () async => _onLoadNotes(emit),
       removeNote: (noteId) async => _onRemoveNote(noteId, emit),
       addNote: (note) async => _onAddNote(note, emit),
+      toggleFavorite: (noteId) async => _onToggleFavorite(noteId, emit),
+      changeFilter: (filter) async => _onChangeFilter(filter, emit),
     );
   }
 
@@ -61,6 +64,25 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   void _onAddNote(NoteModel note, Emitter<HomeState> emit) {
     final updatedNotes = [note, ...state.notes]; // Add to beginning of list
     emit(state.copyWith(notes: updatedNotes));
+  }
+
+  Future<void> _onToggleFavorite(String noteId, Emitter<HomeState> emit) async {
+    final result = await _noteRepository.toggleNoteFavorite(noteId);
+    
+    result.fold(
+      (error) => emit(state.copyWith(error: error)),
+      (updatedNote) {
+        // Update the note in the list
+        final updatedNotes = state.notes.map((note) {
+          return note.id == noteId ? updatedNote : note;
+        }).toList();
+        emit(state.copyWith(notes: updatedNotes, error: null));
+      },
+    );
+  }
+
+  void _onChangeFilter(NoteFilter filter, Emitter<HomeState> emit) {
+    emit(state.copyWith(selectedFilter: filter));
   }
 
   @override

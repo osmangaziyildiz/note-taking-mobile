@@ -150,4 +150,27 @@ class RemoteNoteRepository {
       return left('Failed to sync note: $e');
     }
   }
+
+  // Favorite operations
+  Future<Either<String, NoteModel>> toggleNoteFavorite(String noteId, bool isFavorite) async {
+    try {
+      final response = await _dioService.dio.patch<Map<String, dynamic>>(
+        ApiEndpoints.noteFavorite(noteId),
+        data: {
+          'is_favorite': isFavorite,
+        },
+      );
+
+      if (response.data?['success'] == true) {
+        final updatedNote = NoteModel.fromJson(
+          response.data?['data'] as Map<String, dynamic>,
+        );
+        return right(updatedNote);
+      } else {
+        return left('Server error: ${response.data?['errorMessage']}');
+      }
+    } on Exception catch (e) {
+      return left('Failed to toggle note favorite on server: $e');
+    }
+  }
 }

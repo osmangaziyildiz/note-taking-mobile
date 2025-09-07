@@ -22,7 +22,6 @@ void main() async {
 
   // Initialize LocalizationManager
   await LocalizationManager.init();
-  debugPrint('✅ LocalizationManager initialized successfully!');
 
   // Initialize Firebase
   await Firebase.initializeApp(
@@ -35,7 +34,7 @@ void main() async {
   // Initialize ScreenUtil
   await ScreenUtil.ensureScreenSize();
   FlutterNativeSplash.remove();
-  runApp( MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -53,7 +52,7 @@ class MyApp extends StatelessWidget {
         BlocProvider<AuthBloc>(
           create: (context) {
             final authBloc = sl.get<AuthBloc>()
-            ..add(const AuthEvent.checkAuthStatus());
+              ..add(const AuthEvent.checkAuthStatus());
             return authBloc;
           },
         ),
@@ -77,13 +76,20 @@ class MyApp extends StatelessWidget {
         builder: (context, child) {
           return BlocBuilder<ThemeBloc, ThemeState>(
             builder: (context, state) {
-              return MaterialApp.router(
-                debugShowCheckedModeBanner: false,
-                title: 'NoteTakingApp',
-                theme: AppTheme.light,
-                darkTheme: AppTheme.dark,
-                themeMode: state.themeMode,
-                routerConfig: appRouter.config(),
+              // Listen to language changes and rebuild the UI
+              return ValueListenableBuilder<String?>(
+                valueListenable: LocalizationManager.localeNotifier,
+                builder: (context, locale, _) {
+                  return MaterialApp.router(
+                    key: ValueKey(locale),
+                    debugShowCheckedModeBanner: false,
+                    title: 'NoteTakingApp',
+                    theme: AppTheme.light,
+                    darkTheme: AppTheme.dark,
+                    themeMode: state.themeMode,
+                    routerConfig: appRouter.config(),
+                  );
+                },
               );
             },
           );

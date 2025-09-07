@@ -9,4 +9,5 @@ class ApiEndpoints {
   // Notes endpoints
   static const String notes = '/api/notes/';
   static String noteById(String noteId) => '/api/notes/$noteId';
+  static String noteFavorite(String noteId) => '/api/notes/$noteId/favorite';
 }

@@ -18,4 +18,6 @@ abstract class NoteRepository {
   });
   
   Future<Either<String, Unit>> deleteNote(String noteId);
+  
+  Future<Either<String, NoteModel>> toggleNoteFavorite(String noteId);
 }

@@ -55,13 +55,15 @@ extension HomeEventPatterns on HomeEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _LoadNotes value)?  loadNotes,TResult Function( _RemoveNote value)?  removeNote,TResult Function( _AddNote value)?  addNote,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _LoadNotes value)?  loadNotes,TResult Function( _RemoveNote value)?  removeNote,TResult Function( _AddNote value)?  addNote,TResult Function( _ToggleFavorite value)?  toggleFavorite,TResult Function( _ChangeFilter value)?  changeFilter,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _LoadNotes() when loadNotes != null:
 return loadNotes(_that);case _RemoveNote() when removeNote != null:
 return removeNote(_that);case _AddNote() when addNote != null:
-return addNote(_that);case _:
+return addNote(_that);case _ToggleFavorite() when toggleFavorite != null:
+return toggleFavorite(_that);case _ChangeFilter() when changeFilter != null:
+return changeFilter(_that);case _:
   return orElse();
 
 }
@@ -79,13 +81,15 @@ return addNote(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _LoadNotes value)  loadNotes,required TResult Function( _RemoveNote value)  removeNote,required TResult Function( _AddNote value)  addNote,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _LoadNotes value)  loadNotes,required TResult Function( _RemoveNote value)  removeNote,required TResult Function( _AddNote value)  addNote,required TResult Function( _ToggleFavorite value)  toggleFavorite,required TResult Function( _ChangeFilter value)  changeFilter,}){
 final _that = this;
 switch (_that) {
 case _LoadNotes():
 return loadNotes(_that);case _RemoveNote():
 return removeNote(_that);case _AddNote():
-return addNote(_that);case _:
+return addNote(_that);case _ToggleFavorite():
+return toggleFavorite(_that);case _ChangeFilter():
+return changeFilter(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -102,13 +106,15 @@ return addNote(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _LoadNotes value)?  loadNotes,TResult? Function( _RemoveNote value)?  removeNote,TResult? Function( _AddNote value)?  addNote,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _LoadNotes value)?  loadNotes,TResult? Function( _RemoveNote value)?  removeNote,TResult? Function( _AddNote value)?  addNote,TResult? Function( _ToggleFavorite value)?  toggleFavorite,TResult? Function( _ChangeFilter value)?  changeFilter,}){
 final _that = this;
 switch (_that) {
 case _LoadNotes() when loadNotes != null:
 return loadNotes(_that);case _RemoveNote() when removeNote != null:
 return removeNote(_that);case _AddNote() when addNote != null:
-return addNote(_that);case _:
+return addNote(_that);case _ToggleFavorite() when toggleFavorite != null:
+return toggleFavorite(_that);case _ChangeFilter() when changeFilter != null:
+return changeFilter(_that);case _:
   return null;
 
 }
@@ -125,12 +131,14 @@ return addNote(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  loadNotes,TResult Function( String noteId)?  removeNote,TResult Function( NoteModel note)?  addNote,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  loadNotes,TResult Function( String noteId)?  removeNote,TResult Function( NoteModel note)?  addNote,TResult Function( String noteId)?  toggleFavorite,TResult Function( NoteFilter filter)?  changeFilter,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _LoadNotes() when loadNotes != null:
 return loadNotes();case _RemoveNote() when removeNote != null:
 return removeNote(_that.noteId);case _AddNote() when addNote != null:
-return addNote(_that.note);case _:
+return addNote(_that.note);case _ToggleFavorite() when toggleFavorite != null:
+return toggleFavorite(_that.noteId);case _ChangeFilter() when changeFilter != null:
+return changeFilter(_that.filter);case _:
   return orElse();
 
 }
@@ -148,12 +156,14 @@ return addNote(_that.note);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  loadNotes,required TResult Function( String noteId)  removeNote,required TResult Function( NoteModel note)  addNote,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  loadNotes,required TResult Function( String noteId)  removeNote,required TResult Function( NoteModel note)  addNote,required TResult Function( String noteId)  toggleFavorite,required TResult Function( NoteFilter filter)  changeFilter,}) {final _that = this;
 switch (_that) {
 case _LoadNotes():
 return loadNotes();case _RemoveNote():
 return removeNote(_that.noteId);case _AddNote():
-return addNote(_that.note);case _:
+return addNote(_that.note);case _ToggleFavorite():
+return toggleFavorite(_that.noteId);case _ChangeFilter():
+return changeFilter(_that.filter);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -170,12 +180,14 @@ return addNote(_that.note);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  loadNotes,TResult? Function( String noteId)?  removeNote,TResult? Function( NoteModel note)?  addNote,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  loadNotes,TResult? Function( String noteId)?  removeNote,TResult? Function( NoteModel note)?  addNote,TResult? Function( String noteId)?  toggleFavorite,TResult? Function( NoteFilter filter)?  changeFilter,}) {final _that = this;
 switch (_that) {
 case _LoadNotes() when loadNotes != null:
 return loadNotes();case _RemoveNote() when removeNote != null:
 return removeNote(_that.noteId);case _AddNote() when addNote != null:
-return addNote(_that.note);case _:
+return addNote(_that.note);case _ToggleFavorite() when toggleFavorite != null:
+return toggleFavorite(_that.noteId);case _ChangeFilter() when changeFilter != null:
+return changeFilter(_that.filter);case _:
   return null;
 
 }
@@ -354,6 +366,138 @@ $NoteModelCopyWith<$Res> get note {
     return _then(_self.copyWith(note: value));
   });
 }
+}
+
+/// @nodoc
+
+
+class _ToggleFavorite implements HomeEvent {
+  const _ToggleFavorite(this.noteId);
+  
+
+ final  String noteId;
+
+/// Create a copy of HomeEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$ToggleFavoriteCopyWith<_ToggleFavorite> get copyWith => __$ToggleFavoriteCopyWithImpl<_ToggleFavorite>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ToggleFavorite&&(identical(other.noteId, noteId) || other.noteId == noteId));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,noteId);
+
+@override
+String toString() {
+  return 'HomeEvent.toggleFavorite(noteId: $noteId)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$ToggleFavoriteCopyWith<$Res> implements $HomeEventCopyWith<$Res> {
+  factory _$ToggleFavoriteCopyWith(_ToggleFavorite value, $Res Function(_ToggleFavorite) _then) = __$ToggleFavoriteCopyWithImpl;
+@useResult
+$Res call({
+ String noteId
+});
+
+
+
+
+}
+/// @nodoc
+class __$ToggleFavoriteCopyWithImpl<$Res>
+    implements _$ToggleFavoriteCopyWith<$Res> {
+  __$ToggleFavoriteCopyWithImpl(this._self, this._then);
+
+  final _ToggleFavorite _self;
+  final $Res Function(_ToggleFavorite) _then;
+
+/// Create a copy of HomeEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? noteId = null,}) {
+  return _then(_ToggleFavorite(
+null == noteId ? _self.noteId : noteId // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class _ChangeFilter implements HomeEvent {
+  const _ChangeFilter(this.filter);
+  
+
+ final  NoteFilter filter;
+
+/// Create a copy of HomeEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$ChangeFilterCopyWith<_ChangeFilter> get copyWith => __$ChangeFilterCopyWithImpl<_ChangeFilter>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ChangeFilter&&(identical(other.filter, filter) || other.filter == filter));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,filter);
+
+@override
+String toString() {
+  return 'HomeEvent.changeFilter(filter: $filter)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$ChangeFilterCopyWith<$Res> implements $HomeEventCopyWith<$Res> {
+  factory _$ChangeFilterCopyWith(_ChangeFilter value, $Res Function(_ChangeFilter) _then) = __$ChangeFilterCopyWithImpl;
+@useResult
+$Res call({
+ NoteFilter filter
+});
+
+
+
+
+}
+/// @nodoc
+class __$ChangeFilterCopyWithImpl<$Res>
+    implements _$ChangeFilterCopyWith<$Res> {
+  __$ChangeFilterCopyWithImpl(this._self, this._then);
+
+  final _ChangeFilter _self;
+  final $Res Function(_ChangeFilter) _then;
+
+/// Create a copy of HomeEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? filter = null,}) {
+  return _then(_ChangeFilter(
+null == filter ? _self.filter : filter // ignore: cast_nullable_to_non_nullable
+as NoteFilter,
+  ));
+}
+
+
 }
 
 // dart format on
