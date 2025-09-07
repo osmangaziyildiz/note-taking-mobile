@@ -281,6 +281,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             fontSize: 14.sp,
                           ),
                         ),
+                        SizedBox(width: 4.w),
                         GestureDetector(
                           onTap: () {
                             context.router.push(const LoginRoute());

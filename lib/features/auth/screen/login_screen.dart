@@ -136,7 +136,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 // Email Field
                 AuthTextField(
                   controller: _emailController,
-                  hintText: 'Email',
+                  hintText: 'Email'.localized,
                   keyboardType: TextInputType.emailAddress,
                   errorText: state.emailError,
                   onChanged: (value) {
@@ -150,7 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 // Password Field
                 AuthTextField(
                   controller: _passwordController,
-                  hintText: 'Password',
+                  hintText: 'Password'.localized,
                   obscureText: !_isPasswordVisible,
                   errorText: state.passwordError,
                   onChanged: (value) {
@@ -185,8 +185,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             );
                           },
                     child: Text(
-                      'Forgot Password?',
+                      'Forgot Password?'.localized,
                       style: TextStyle(
+                        decoration: TextDecoration.underline,
                         color: state.isLoading ? AppColors.grey.withValues(alpha: 0.5) : AppColors.grey,
                         fontSize: 14.sp,
                       ),
@@ -198,7 +199,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 // Login Button
                 AuthButton(
-                  text: 'Login',
+                  text: 'Login'.localized,
                   isLoading: state.isLoading,
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
@@ -216,18 +217,20 @@ class _LoginScreenState extends State<LoginScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Don't have an account? ",
+                      "Don't have an account? ".localized,
                       style: TextStyle(
                         fontSize: 14.sp,
                       ),
                     ),
+                    SizedBox(width: 4.w),
                     GestureDetector(
                       onTap: () {
                         context.router.push(const RegisterRoute());
                       },
                       child: Text(
-                        'Register',
+                        'Register'.localized,
                         style: TextStyle(
+                          decoration: TextDecoration.underline,
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w600,
                         ),

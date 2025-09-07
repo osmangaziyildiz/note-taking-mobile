@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:shared_preferences/shared_preferences.dart';
 
 extension LocalizedString on String {
   // Example usage: Text('Hello'.localized) or 'Hello'.localized
@@ -29,6 +30,9 @@ class LocalizationManager {
   static String? currentLanguage;
   static Map<String, Map<String, String>> translations = {};
   static Set<String> supportedLanguages = {};
+  
+  // SharedPreferences key for user language preference
+  static const String _userLanguageKey = 'user_language_preference';
 
   static Future<void> init() async {
     // Load each language file separately
@@ -36,7 +40,7 @@ class LocalizationManager {
       await _loadLanguageFile(languageFile);
     }
 
-    fetchLanguage();
+    await fetchLanguage();
   }
 
   static Future<void> _loadLanguageFile(String languageFile) async {
@@ -64,10 +68,22 @@ class LocalizationManager {
     }
   }
 
-  static void fetchLanguage() {
+  static Future<void> fetchLanguage() async {
+    // 1. Check user's saved language preference first
+    final prefs = await SharedPreferences.getInstance();
+    final savedLanguage = prefs.getString(_userLanguageKey);
+    
+    if (savedLanguage != null && supportedLanguages.contains(savedLanguage)) {
+      currentLanguage = savedLanguage;
+      localeNotifier.value = currentLanguage;
+      debugPrint('👤 User preference found: $savedLanguage');
+      return;
+    }
+
+    // 2. If no user preference, use device locale
     final locale = PlatformDispatcher.instance.locale.toLanguageTag();
 
-    // 1. Exact Match Check
+    // 2.1. Exact Match Check
     if (supportedLanguages.contains(locale)) {
       currentLanguage = locale;
       localeNotifier.value = currentLanguage;
@@ -78,7 +94,7 @@ class LocalizationManager {
     // If no match, use the base language code.
     final base = locale.split('-')[0];
 
-    // 2. Special Rule (Fallback) Check
+    // 2.2. Special Rule (Fallback) Check
     if (_specialFallbacks.containsKey(base)) {
       final fallbackLanguage = _specialFallbacks[base]!;
       if (supportedLanguages.contains(fallbackLanguage)) {
@@ -89,7 +105,7 @@ class LocalizationManager {
       }
     }
 
-    // 3. Base Language Code Check
+    // 2.3. Base Language Code Check
     if (supportedLanguages.contains(base)) {
       currentLanguage = base;
       localeNotifier.value = currentLanguage;
@@ -97,7 +113,7 @@ class LocalizationManager {
       return;
     }
 
-    // 4. Return to Default Language
+    // 3. Return to Default Language
     currentLanguage = _defaultLanguage;
     localeNotifier.value = currentLanguage;
     debugPrint('🏠 Default language used: $_defaultLanguage');
@@ -118,11 +134,16 @@ class LocalizationManager {
   }
 
   // Language change method
-  static void changeLanguage(String languageCode) {
+  static Future<void> changeLanguage(String languageCode) async {
     if (supportedLanguages.contains(languageCode)) {
       currentLanguage = languageCode;
       localeNotifier.value = currentLanguage;
-      debugPrint('🔄 Language changed: $languageCode');
+      
+      // Save user preference
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString(_userLanguageKey, languageCode);
+      
+      debugPrint('🔄 Language changed and saved: $languageCode');
     } else {
       debugPrint('⚠️ Unsupported language: $languageCode');
     }
