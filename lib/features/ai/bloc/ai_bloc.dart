@@ -18,7 +18,7 @@ class AiBloc extends Bloc<AiEvent, AiState> {
   final GeminiService _geminiService;
   final LocalNoteRepository _localNoteRepository;
   
-  // Chat geçmişi
+  // Chat history
   final List<Map<String, String>> _chatHistory = [];
   String? _notesText;
 
@@ -54,16 +54,12 @@ class AiBloc extends Bloc<AiEvent, AiState> {
         await _processQuestion(question, emit);
       }
     } on Exception catch (e) {
-      emit(AiState.error(message: 'Beklenmeyen hata: $e'));
+      emit(AiState.error(message: 'Unexpected error: $e'));
     }
   }
 
   Future<void> _processQuestion(String question, Emitter<AiState> emit) async {
-    print('🤖 AI BLoC: Soru işleniyor: $question');
-    print('📚 AI BLoC: Chat geçmişi uzunluğu: ${_chatHistory.length}');
-    print('📝 AI BLoC: Chat geçmişi: $_chatHistory');
-    
-    // 2. AI'ya gönder (chat geçmişi ile)
+    // 2. Send to AI (with chat history)
     final aiResult = await _geminiService.askQuestionWithNotes(
       question: question,
       notes: _notesText!,
@@ -71,16 +67,12 @@ class AiBloc extends Bloc<AiEvent, AiState> {
     );
     
     await aiResult.fold(
-      (error) async => emit(AiState.error(message: 'AI yanıtı alınırken hata: $error')),
+      (error) async => emit(AiState.error(message: 'Error getting AI response: $error')),
       (response) async {
-        print('✅ AI BLoC: AI yanıtı alındı: $response');
         
-        // Chat geçmişine ekle
+        // Add to chat history
         _chatHistory..add({'role': 'user', 'content': question})
         ..add({'role': 'model', 'content': response});
-        
-        print('💾 AI BLoC: Chat geçmişi güncellendi, yeni uzunluk: ${_chatHistory.length}');
-        print('📋 AI BLoC: Güncellenmiş chat geçmişi: $_chatHistory');
         
         emit(AiState.responseReceived(
           response: response,

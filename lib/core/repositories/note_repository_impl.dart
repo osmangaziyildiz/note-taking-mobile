@@ -301,9 +301,9 @@ class NoteRepositoryImpl implements NoteRepository {
       final syncResult = await _remoteNoteRepository.syncNote(localNote);
       if (syncResult.isRight()) {
         final syncedNote = syncResult.getOrElse((error) => localNote);
-        // Local'i güncelle
+        // Update local
         await _localNoteRepository.saveNote(syncedNote);
-        // Last synced metadata'yı güncelle
+        // Update last synced metadata
         final markRes = await _localNoteRepository.markAsSynced(syncedNote.id);
         if (markRes.isLeft()) {}
       } else {}

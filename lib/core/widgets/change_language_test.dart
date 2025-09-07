@@ -14,7 +14,7 @@ class _ChangeLanguageTestState extends State<ChangeLanguageTest> {
   @override
   void initState() {
     super.initState();
-    // Mevcut dili dropdown'da göster
+    // Show current language in dropdown
     selectedLanguage = LocalizationManager.getCurrentLanguage();
   }
 
@@ -24,7 +24,7 @@ class _ChangeLanguageTestState extends State<ChangeLanguageTest> {
         selectedLanguage = newLanguage;
       });
       LocalizationManager.changeLanguage(newLanguage);
-      // UI'ı yenilemek için setState
+      // setState to refresh UI
       setState(() {});
     }
   }
@@ -47,13 +47,13 @@ class _ChangeLanguageTestState extends State<ChangeLanguageTest> {
         title: const Text('NoteTakingApp'),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         actions: [
-          // Dil seçimi dropdown'ı
+          // Language selection dropdown
           Padding(
             padding: const EdgeInsets.all(16),
             child: DropdownButton<String>(
               value: selectedLanguage,
               hint: const Text('🌍'),
-              underline: Container(), // Alt çizgiyi kaldır
+              underline: Container(), // Remove underline
               items: LocalizationManager.getSupportedLanguages().map((
                 languageCode,
               ) {
@@ -76,7 +76,7 @@ class _ChangeLanguageTestState extends State<ChangeLanguageTest> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Dil değişikliği test metinleri
+              // Language change test texts
               Text(
                 'Merhabalar'.localized,
                 style: Theme.of(context).textTheme.headlineMedium,
@@ -90,7 +90,7 @@ class _ChangeLanguageTestState extends State<ChangeLanguageTest> {
               ),
               const SizedBox(height: 40),
 
-              // Daha fazla test metni
+              // More test texts
               Card(
                 child: Padding(
                   padding: const EdgeInsets.all(16),
@@ -117,7 +117,7 @@ class _ChangeLanguageTestState extends State<ChangeLanguageTest> {
 
               const SizedBox(height: 40),
 
-              // Mevcut dil bilgisi
+              // Current language information
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
@@ -125,7 +125,7 @@ class _ChangeLanguageTestState extends State<ChangeLanguageTest> {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
-                  'Mevcut Dil: ${_getLanguageDisplayName(selectedLanguage ?? 'tr-TR')}',
+                  'Current Language: ${_getLanguageDisplayName(selectedLanguage ?? 'tr-TR')}',
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
               ),

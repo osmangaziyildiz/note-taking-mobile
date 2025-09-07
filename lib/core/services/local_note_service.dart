@@ -42,9 +42,9 @@ class LocalNoteService {
   }
   
   Future<void> updateLastSyncTime(DateTime syncTime) async {
-    // Bu metod için ayrı bir tablo oluşturabiliriz veya
-    // tüm synced notların lastSyncedAt'ini güncelleyebiliriz
-    // Şimdilik basit tutuyoruz
+    // We can create a separate table for this method or
+    // update the lastSyncedAt of all synced notes
+    // For now, keeping it simple
   }
   
   Future<List<NoteModel>> getNotesModifiedAfter(DateTime lastSync) async {

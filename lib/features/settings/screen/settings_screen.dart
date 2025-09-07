@@ -201,7 +201,7 @@ class SettingsScreen extends StatelessWidget {
   Widget _buildHeader(BuildContext context) {
     return Stack(
       children: [
-        // Ortalanmış başlık
+        // Centered title
         Center(
           child: Text(
             'Settings'.localized,
@@ -211,7 +211,7 @@ class SettingsScreen extends StatelessWidget {
             ),
           ),
         ),
-        // Sola yaslı geri butonu
+        // Left-aligned back button
         Align(
           alignment: Alignment.centerLeft,
           child: IconButton(
@@ -273,7 +273,7 @@ class SettingsScreen extends StatelessWidget {
         title.localized,
         style: TextStyle(fontSize: 16.sp),
       ),
-      // Sağ tarafa metin + ikon (veya özel trailing) yerleştir
+      // Place text + icon (or custom trailing) on the right side
       trailing:
           trailing ??
           Row(

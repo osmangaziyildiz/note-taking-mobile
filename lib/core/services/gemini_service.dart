@@ -15,23 +15,17 @@ class GeminiService {
     _gemini = Gemini.instance;
   }
 
-
-  /// Notlarla birlikte soru sorma (AI Asistan) - Multi-turn chat
+  /// Ask questions with notes (AI Assistant) - Multi-turn chat
   Future<Either<String, String>> askQuestionWithNotes({
     required String question,
     required String notes,
     List<Map<String, String>>? chatHistory,
   }) async {
     try {
-      print('🚀 Gemini Service: Soru alındı: $question');
-      print('📚 Gemini Service: Chat geçmişi: $chatHistory');
-      print('📝 Gemini Service: Notlar uzunluğu: ${notes.length}');
-      
       final chatMessages = <Content>[];
 
-      // İlk mesaj: Notları tanıt
+      // First message: Introduce notes
       if (chatHistory == null || chatHistory.isEmpty) {
-        print('🆕 Gemini Service: İlk mesaj - notlar tanıtılıyor');
         chatMessages.add(
           Content(
             role: 'user',
@@ -56,9 +50,7 @@ Kullanıcının Sorusu: $question
           ),
         );
       } else {
-        print('💬 Gemini Service: Chat geçmişi var - ${chatHistory.length} mesaj');
-        
-        // İlk mesaj: Notları tanıt (chat geçmişi varken de)
+        // First message: Introduce notes (even with chat history)
         chatMessages.add(
           Content(
             role: 'user',
@@ -82,10 +74,9 @@ Kullanıcının Sorusu: $question
             ],
           ),
         );
-        
-        // Chat geçmişini ekle
+
+        // Add chat history
         for (final message in chatHistory) {
-          print('📨 Gemini Service: Mesaj ekleniyor - ${message['role']}: ${message['content']}');
           chatMessages.add(
             Content(
               role: message['role'],
@@ -94,17 +85,14 @@ Kullanıcının Sorusu: $question
           );
         }
 
-        // Yeni soruyu ekle
-        print('❓ Gemini Service: Yeni soru ekleniyor: $question');
+        // Add new question
         chatMessages.add(Content(role: 'user', parts: [Part.text(question)]));
       }
 
-      print("📤 Gemini Service: ${chatMessages.length} mesaj Gemini'ye gönderiliyor'");
       final response = await _gemini.chat(chatMessages);
-      print('📥 Gemini Service: Gemini yanıtı: ${response?.output}');
-      return Right(response?.output ?? 'Yanıt oluşturulamadı');
+      return Right(response?.output ?? 'Response could not be generated');
     } on Exception catch (e) {
-      return Left('AI yanıtı alınırken hata oluştu: $e');
+      return Left('Error occurred while getting AI response: $e');
     }
   }
 }
