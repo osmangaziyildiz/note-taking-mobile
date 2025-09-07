@@ -4,57 +4,97 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notetakingapp/core/router/app_router.dart';
 import 'package:notetakingapp/core/utils/snackbar_helper.dart';
 import 'package:notetakingapp/features/auth/bloc/auth/auth_bloc.dart';
-import 'package:notetakingapp/features/auth/bloc/auth/auth_event.dart';
 import 'package:notetakingapp/features/auth/bloc/auth/auth_state.dart';
+import 'package:notetakingapp/features/home/bloc/home_bloc.dart';
+import 'package:notetakingapp/features/home/bloc/home_event.dart';
+import 'package:notetakingapp/features/home/bloc/home_state.dart';
+import 'package:notetakingapp/features/home/widgets/home_category_filters.dart';
+import 'package:notetakingapp/features/home/widgets/home_floating_action_button.dart';
+import 'package:notetakingapp/features/home/widgets/home_header.dart';
+import 'package:notetakingapp/features/home/widgets/home_notes_list.dart';
+import 'package:notetakingapp/features/home/widgets/home_search_bar.dart';
 
 @RoutePage()
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // Load notes when screen opens
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<HomeBloc>().add(const HomeEvent.loadNotes());
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthBloc, AuthState>(
-      listener: (context, state) {
-        state.when(
-          initial: () {},
-          authenticated: (user) {},
-          unauthenticated: () {
-            context.router.replaceAll([const LoginRoute()]);
-          },
-          error: (message) {
-            SnackbarHelper.showError(
-              context: context,
-              title: 'Error',
-              message: message,
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<AuthBloc, AuthState>(
+          listener: (context, state) {
+            state.when(
+              initial: () {},
+              authenticated: (user) {},
+              unauthenticated: () {
+                context.router.replaceAll([const LoginRoute()]);
+              },
+              error: (message) {
+                SnackbarHelper.showError(
+                  context: context,
+                  title: 'Error',
+                  message: message,
+                );
+              },
             );
           },
-        );
-      },
-      child: Scaffold(
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text(
-                'Welcome to Home!',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 20),
-              const Text('You are successfully logged in.'),
-
-              BlocBuilder<AuthBloc, AuthState>(
-                builder: (context, state) {
-                  return IconButton(
-                    onPressed: () {
-                      context.read<AuthBloc>().add(const AuthEvent.logout());
-                    },
-                    icon: const Icon(Icons.logout),
-                  );
-                },
-              ),
-            ],
+        ),
+        BlocListener<HomeBloc, HomeState>(
+          listener: (context, state) {
+            if (state.error != null) {
+              SnackbarHelper.showError(
+                context: context,
+                title: 'Error',
+                message: state.error!,
+              );
+            }
+          },
+        ),
+      ],
+      child: const Scaffold(
+        backgroundColor: Color(0xFF1E1E1E),
+        body: SafeArea(
+          child: Padding(
+            padding: EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Header
+                HomeHeader(),
+                SizedBox(height: 20),
+                
+                // Search Bar
+                HomeSearchBar(),
+                SizedBox(height: 20),
+                
+                // Category Filters
+                HomeCategoryFilters(),
+                SizedBox(height: 20),
+                
+                // Notes List
+                Expanded(
+                  child: HomeNotesList(),
+                ),
+              ],
+            ),
           ),
         ),
+        floatingActionButton: HomeFloatingActionButton(),
       ),
     );
   }

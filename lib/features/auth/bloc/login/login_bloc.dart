@@ -27,6 +27,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       passwordChanged: (password) async => _onPasswordChanged(password, emit),
       submitPressed: () async => _onSubmitPressed(emit),
       signInWithGooglePressed: () async => _onSignInWithGooglePressed(emit),
+      forgotPasswordPressed: () async => _onForgotPasswordPressed(emit),
       clearForm: () async => _onClearForm(emit),
       clearSingleTimeEvent: () async => _onClearSingleTimeEvent(emit),
     );
@@ -138,6 +139,39 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   // Clear single time event
+  Future<void> _onForgotPasswordPressed(Emitter<LoginState> emit) async {
+    if (state.email.isEmpty) {
+      emit(state.copyWith(
+        singleTimeEvent: const LoginSingleTimeEvent.showErrorDialog('Please enter your email address'),
+      ));
+      return;
+    }
+
+    if (!state.isEmailValid) {
+      emit(state.copyWith(
+        singleTimeEvent: const LoginSingleTimeEvent.showErrorDialog('Please enter a valid email address'),
+      ));
+      return;
+    }
+
+    emit(state.copyWith(isLoading: true));
+
+    final result = await _authRepository.resetPassword(email: state.email.trim());
+
+    await result.fold(
+      (error) async => emit(state.copyWith(
+        isLoading: false,
+        singleTimeEvent: LoginSingleTimeEvent.showErrorDialog(error),
+      )),
+      (success) async => emit(state.copyWith(
+        isLoading: false,
+        singleTimeEvent: const LoginSingleTimeEvent.showSuccessDialog(
+          'Password reset email sent! Please check your inbox.',
+        ),
+      )),
+    );
+  }
+
   void _onClearSingleTimeEvent(Emitter<LoginState> emit) {
     emit(state.copyWith(singleTimeEvent: null));
   }

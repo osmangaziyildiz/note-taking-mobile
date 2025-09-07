@@ -9,8 +9,14 @@ class AuthGuard extends AutoRouteGuard {
     final currentUser = FirebaseAuth.instance.currentUser;
 
     if (currentUser != null) {
-      // User is logged in, redirect to home
-      resolver.next();
+      // User is logged in, check email verification
+      if (currentUser.emailVerified) {
+        // Email is verified, redirect to home
+        resolver.next();
+      } else {
+        // Email is not verified, redirect to email verification
+        router.replaceAll([const EmailVerificationRoute()]);
+      }
     } else {
       // User is not logged in, redirect to login
       router.replaceAll([const LoginRoute()]);

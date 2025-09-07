@@ -18,6 +18,9 @@ class LoginEvent with _$LoginEvent {
   // Sign in with Google pressed event
   const factory LoginEvent.signInWithGooglePressed() = _SignInWithGooglePressed;
   
+  // Forgot password pressed event
+  const factory LoginEvent.forgotPasswordPressed() = _ForgotPasswordPressed;
+  
   // Clear form event
   const factory LoginEvent.clearForm() = _ClearForm;
 

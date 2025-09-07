@@ -11,6 +11,9 @@ import 'package:notetakingapp/core/theme/bloc/theme_bloc.dart';
 import 'package:notetakingapp/features/auth/bloc/auth/auth_bloc.dart';
 import 'package:notetakingapp/features/auth/bloc/auth/auth_event.dart';
 import 'package:notetakingapp/features/auth/bloc/login/login_bloc.dart';
+import 'package:notetakingapp/features/home/bloc/home_bloc.dart';
+import 'package:notetakingapp/features/note/bloc/create/note_create_bloc.dart';
+import 'package:notetakingapp/features/note/bloc/edit/note_edit_bloc.dart';
 import 'package:notetakingapp/firebase_options.dart';
 
 void main() async {
@@ -56,6 +59,15 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<LoginBloc>(
           create: (context) => sl.get<LoginBloc>(),
+        ),
+        BlocProvider<HomeBloc>(
+          create: (context) => sl.get<HomeBloc>(),
+        ),
+        BlocProvider<NoteCreateBloc>(
+          create: (context) => sl.get<NoteCreateBloc>(),
+        ),
+        BlocProvider<NoteEditBloc>(
+          create: (context) => sl.get<NoteEditBloc>(),
         ),
       ],
       child: ScreenUtilInit(
