@@ -61,8 +61,8 @@ Future<void> initServiceLocator() async {
     ..registerSingleton<LoginBloc>(
       LoginBloc(authRepository: sl()),
     )
-    ..registerSingleton<RegisterBloc>(
-      RegisterBloc(authRepository: sl()),
+    ..registerFactory<RegisterBloc>(
+      () => RegisterBloc(authRepository: sl()),
     )
     ..registerSingleton<HomeBloc>(
       HomeBloc(
