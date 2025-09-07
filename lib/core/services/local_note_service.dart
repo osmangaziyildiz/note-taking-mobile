@@ -38,7 +38,7 @@ class LocalNoteService {
   
   // Last sync operations
   Future<DateTime?> getLastSyncTime() async {
-    return await _database.getLastSyncTime();
+    return  _database.getLastSyncTime();
   }
   
   Future<void> updateLastSyncTime(DateTime syncTime) async {

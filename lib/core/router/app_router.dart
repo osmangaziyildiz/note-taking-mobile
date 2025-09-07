@@ -7,6 +7,7 @@ import 'package:notetakingapp/features/auth/screen/register_screen.dart';
 import 'package:notetakingapp/features/home/screen/home_screen.dart';
 import 'package:notetakingapp/features/note/screens/note_create_screen.dart';
 import 'package:notetakingapp/features/note/screens/note_edit_screen.dart';
+import 'package:notetakingapp/features/settings/screen/settings_screen.dart';
 
 part 'app_router.gr.dart';
 
@@ -24,7 +25,8 @@ class AppRouter extends RootStackRouter {
         AutoRoute(page: EmailVerificationRoute.page, path: '/email-verification'),
         AutoRoute(page: HomeRoute.page, path: '/home', initial: true, guards: [AuthGuard()]),
         AutoRoute(page: NoteCreateRoute.page, path: '/note/create', guards: [AuthGuard()]),
-        AutoRoute(page: NoteEditRoute.page, path: '/note/edit/:noteId', guards: [AuthGuard()])
+        AutoRoute(page: NoteEditRoute.page, path: '/note/edit/:noteId', guards: [AuthGuard()]),
+        AutoRoute(page: SettingsRoute.page, path: '/settings', guards: [AuthGuard()]),
       ];
 
   @override

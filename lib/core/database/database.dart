@@ -1,9 +1,9 @@
 import 'dart:io';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart' as p;
 import 'package:notetakingapp/core/models/note_model.dart';
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
 
 part 'database.g.dart';
 
@@ -78,7 +78,7 @@ class AppDatabase extends _$AppDatabase {
   // Get note by id
   Future<Note?> getNoteById(String id) async {
     final query = select(notes)..where((tbl) => tbl.id.equals(id));
-    return await query.getSingleOrNull();
+    return query.getSingleOrNull();
   }
   
   // Insert or update note
@@ -120,6 +120,6 @@ class AppDatabase extends _$AppDatabase {
   // Get notes modified after last sync
   Future<List<Note>> getNotesModifiedAfter(DateTime lastSync) async {
     final query = select(notes)..where((tbl) => tbl.updatedAt.isBiggerThanValue(lastSync));
-    return await query.get();
+    return query.get();
   }
 }

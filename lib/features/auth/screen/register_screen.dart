@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:notetakingapp/core/di/service_locator.dart';
+import 'package:notetakingapp/core/localization/localization_manager.dart';
 import 'package:notetakingapp/core/router/app_router.dart';
 import 'package:notetakingapp/features/auth/bloc/register/register_bloc.dart';
 import 'package:notetakingapp/features/auth/bloc/register/register_event.dart';
@@ -90,7 +91,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         Expanded(
                           child: Text(
-                            'Create Account',
+                            'Create Account'.localized,
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: 27.sp,
@@ -108,7 +109,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                     // Subtitle
                     Text(
-                      'Sign up to start taking notes.',
+                      'Sign up to start taking notes.'.localized,
                       style: TextStyle(
                         fontSize: 16.sp,
                       ),
@@ -121,7 +122,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                        builder: (context, state) {
                          return SocialAuthButton(
                            iconPath: 'assets/icons/google_icon.png',
-                           label: 'Continue with Google',
+                           label: 'Continue with Google'.localized,
                            onPressed: state.isLoading
                                ? () {}
                                : () {
@@ -156,7 +157,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                        builder: (context, state) {
                          return AuthTextField(
                            controller: _nameController,
-                           hintText: 'Full Name (Optional)',
+                           hintText: 'Full Name (Optional)'.localized,
                            keyboardType: TextInputType.name,
                            errorText: state.nameError,
                            onChanged: (value) {
@@ -175,7 +176,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       builder: (context, state) {
                         return AuthTextField(
                           controller: _emailController,
-                          hintText: 'Email',
+                          hintText: 'Email'.localized,
                           keyboardType: TextInputType.emailAddress,
                           errorText: state.emailError,
                           onChanged: (value) {
@@ -194,7 +195,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       builder: (context, state) {
                         return AuthTextField(
                           controller: _passwordController,
-                          hintText: 'Password',
+                          hintText: 'Password'.localized,
                           obscureText: !_isPasswordVisible,
                           errorText: state.passwordError,
                           onChanged: (value) {
@@ -225,7 +226,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       builder: (context, state) {
                         return AuthTextField(
                           controller: _confirmPasswordController,
-                          hintText: 'Confirm Password',
+                          hintText: 'Confirm Password'.localized ,
                           obscureText: !_isConfirmPasswordVisible,
                           errorText: state.confirmPasswordError,
                           onChanged: (value) {
@@ -256,7 +257,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                      BlocBuilder<RegisterBloc, RegisterState>(
                        builder: (context, state) {
                          return AuthButton(
-                           text: 'Sign Up',
+                           text: 'Sign Up'.localized,
                            isLoading: state.isLoading,
                            onPressed: state.isFormValid && !state.isLoading
                                ? () {
@@ -276,7 +277,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Already have an account? ',
+                          'Already have an account? '.localized,
                           style: TextStyle(
                             fontSize: 14.sp,
                           ),
@@ -286,7 +287,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             context.router.push(const LoginRoute());
                           },
                           child: Text(
-                            'Sign in',
+                            'Sign in'.localized,
                             style: TextStyle(
                               fontSize: 14.sp,
                               fontWeight: FontWeight.w600,

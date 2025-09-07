@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:flutter/foundation.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
 class ConnectionService {
@@ -10,7 +9,6 @@ class ConnectionService {
   static final ConnectionService _instance = ConnectionService._internal();
 
   final InternetConnection _connection = InternetConnection();
-  StreamSubscription<InternetStatus>? _subscription;
   
   bool _isConnected = true;
   StreamController<bool>? _connectionController;
@@ -26,39 +24,16 @@ class ConnectionService {
 
   /// Initialize connection monitoring
   void initialize() {
-    _startMonitoring();
-  }
-
-  /// Start monitoring internet connection
-  void _startMonitoring() {
-    _subscription = _connection.onStatusChange.listen((status) {
+    _connection.onStatusChange.listen((status) {
       final wasConnected = _isConnected;
       _isConnected = status == InternetStatus.connected;
       
       // Only emit if status changed
       if (wasConnected != _isConnected) {
         _connectionController?.add(_isConnected);
+        print('🌐 ConnectionService: Internet status changed: $_isConnected');
       }
     });
   }
 
-  /// Check connection status once
-  Future<bool> checkConnection() async {
-    try {
-      _isConnected = await _connection.hasInternetAccess;
-      return await _connection.hasInternetAccess;
-    } on Exception catch (e) {
-      debugPrint('❌ Error checking connection: $e');
-      return false;
-    }
-  }
-
-  /// Get raw InternetStatus stream
-  Stream<InternetStatus> get statusStream => _connection.onStatusChange;
-
-  /// Dispose resources
-  void dispose() {
-    _subscription?.cancel();
-    _connectionController?.close();
-  }
 }

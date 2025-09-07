@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notetakingapp/core/models/note_model.dart';
+import 'package:notetakingapp/core/network/connection_service.dart';
 import 'package:notetakingapp/core/repositories/note_repository.dart';
 import 'package:notetakingapp/features/home/bloc/home_event.dart';
 import 'package:notetakingapp/features/home/bloc/home_state.dart';
@@ -8,12 +10,19 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   HomeBloc({
     required NoteRepository noteRepository,
+    required ConnectionService connectionService,
   })  : _noteRepository = noteRepository,
+        _connectionService = connectionService,
         super(const HomeState()) {
     on<HomeEvent>(_onHomeEvent);
+    _connSub = _connectionService.connectionStream.listen((isOnline) {
+      if (isOnline) add(const HomeEvent.loadNotes());
+    });
   }
   
   final NoteRepository _noteRepository;
+  final ConnectionService _connectionService;
+  late final StreamSubscription<bool> _connSub;
 
   Future<void> _onHomeEvent(
     HomeEvent event,
@@ -58,4 +67,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     print('✅ Note added to home state. Total notes: ${updatedNotes.length}');
   }
 
+  @override
+  Future<void> close() {
+    _connSub.cancel();
+    return super.close();
+  }
 }

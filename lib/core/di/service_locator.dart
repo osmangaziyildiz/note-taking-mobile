@@ -7,6 +7,8 @@ import 'package:notetakingapp/core/network/connection_service.dart';
 import 'package:notetakingapp/core/network/dio_service.dart';
 import 'package:notetakingapp/core/repositories/note_repository.dart';
 import 'package:notetakingapp/core/repositories/note_repository_impl.dart';
+import 'package:notetakingapp/core/repositories/local_note_repository.dart';
+import 'package:notetakingapp/core/repositories/remote_note_repository.dart';
 import 'package:notetakingapp/core/services/local_note_service.dart';
 import 'package:notetakingapp/core/theme/bloc/theme_bloc.dart';
 import 'package:notetakingapp/features/auth/bloc/auth/auth_bloc.dart';
@@ -38,10 +40,12 @@ Future<void> initServiceLocator() async {
         firestore: sl(),
       ),
     )
+    ..registerLazySingleton<LocalNoteRepository>(() => LocalNoteRepository(sl()))
+    ..registerLazySingleton<RemoteNoteRepository>(() => RemoteNoteRepository(sl()))
     ..registerLazySingleton<NoteRepository>(
       () => NoteRepositoryImpl(
-        dioService: sl(),
-        localNoteService: sl(),
+        localNoteRepository: sl(),
+        remoteNoteRepository: sl(),
         connectionService: sl(),
         authRepository: sl(),
       ),
@@ -58,7 +62,10 @@ Future<void> initServiceLocator() async {
       RegisterBloc(authRepository: sl()),
     )
     ..registerSingleton<HomeBloc>(
-      HomeBloc(noteRepository: sl()),
+      HomeBloc(
+        noteRepository: sl(),
+        connectionService: sl(),
+      ),
     )
     ..registerSingleton<NoteCreateBloc>(
       NoteCreateBloc(noteRepository: sl()),
