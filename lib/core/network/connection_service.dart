@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/material.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
 class ConnectionService {
@@ -31,7 +32,7 @@ class ConnectionService {
       // Only emit if status changed
       if (wasConnected != _isConnected) {
         _connectionController?.add(_isConnected);
-        print('🌐 ConnectionService: Internet status changed: $_isConnected');
+        debugPrint('🌐 ConnectionService: Internet status changed: $_isConnected');
       }
     });
   }

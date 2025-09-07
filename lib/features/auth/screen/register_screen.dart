@@ -141,7 +141,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       iconPath: 'assets/icons/apple_icon.png',
                       label: 'Continue with Apple',
                       onPressed: () {
-                        // TODO: Implement Apple Sign In
                       },
                     ), */
 

@@ -1,5 +1,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
+// ignore_for_file: specify_nonobvious_property_types, document_ignores, unnecessary_null_checks
+
 part of 'note_model.dart';
 
 // **************************************************************************

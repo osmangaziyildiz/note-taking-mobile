@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/material.dart';
 import 'package:notetakingapp/core/router/app_router.dart';
 
 class HomeHeader extends StatelessWidget {

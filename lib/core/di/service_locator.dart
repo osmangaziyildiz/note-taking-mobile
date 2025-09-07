@@ -5,9 +5,9 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:notetakingapp/core/database/database.dart';
 import 'package:notetakingapp/core/network/connection_service.dart';
 import 'package:notetakingapp/core/network/dio_service.dart';
+import 'package:notetakingapp/core/repositories/local_note_repository.dart';
 import 'package:notetakingapp/core/repositories/note_repository.dart';
 import 'package:notetakingapp/core/repositories/note_repository_impl.dart';
-import 'package:notetakingapp/core/repositories/local_note_repository.dart';
 import 'package:notetakingapp/core/repositories/remote_note_repository.dart';
 import 'package:notetakingapp/core/services/local_note_service.dart';
 import 'package:notetakingapp/core/theme/bloc/theme_bloc.dart';
@@ -29,7 +29,7 @@ Future<void> initServiceLocator() async {
     ..registerLazySingleton<GoogleSignIn>(() => GoogleSignIn.instance)
     ..registerLazySingleton<FirebaseFirestore>(() => FirebaseFirestore.instance)
     ..registerLazySingleton<ConnectionService>(() => ConnectionService()..initialize())
-    ..registerLazySingleton<AppDatabase>(() => AppDatabase())
+    ..registerLazySingleton<AppDatabase>(AppDatabase.new)
     ..registerLazySingleton<LocalNoteService>(() => LocalNoteService(sl()))
     ..registerLazySingleton<DioService>(() => DioService()..initialize(authRepository: sl()))
     // Repositories

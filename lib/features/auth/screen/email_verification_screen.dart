@@ -51,7 +51,7 @@ class EmailVerificationScreen extends StatelessWidget {
           backgroundColor: const Color(0xFF1E1E1E),
           body: SafeArea(
             child: Padding(
-              padding: const EdgeInsets.all(24.0),
+              padding: const EdgeInsets.all(24),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -60,7 +60,7 @@ class EmailVerificationScreen extends StatelessWidget {
                     width: 100,
                     height: 100,
                     decoration: BoxDecoration(
-                      color: const Color(0xFFE53E3E).withOpacity(0.1),
+                      color: const Color(0xFFE53E3E).withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(50),
                     ),
                     child: const Icon(
@@ -159,7 +159,6 @@ class EmailVerificationScreen extends StatelessWidget {
                             foregroundColor: const Color(0xFFE53E3E),
                             side: const BorderSide(
                               color: Color(0xFFE53E3E),
-                              width: 1,
                             ),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),

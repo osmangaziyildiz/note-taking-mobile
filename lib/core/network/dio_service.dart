@@ -37,11 +37,6 @@ class DioService {
           handler.next(options);
         },
         onError: (error, handler) {
-          // Token expired
-          if (error.response?.statusCode == 401) {
-            // TODO: Handle unauthorized
-            print('❌ Unauthorized - Token expired');
-          }
           handler.next(error);
         },
       ),
@@ -65,7 +60,6 @@ class DioService {
     final result = await _authRepository!.getIdToken();
     return result.fold(
       (error) {
-        print('❌ Failed to get auth token: $error');
         return null;
       },
       (token) => token,

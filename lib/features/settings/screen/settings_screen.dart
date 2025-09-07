@@ -99,7 +99,7 @@ class SettingsScreen extends StatelessWidget {
       stream: service.connectionStream,
       initialData: service.isConnected,
       builder: (context, snapshot) {
-        final connected = snapshot.data == true;
+        final connected = snapshot.data ?? false;
         return ListTile(
           leading: Icon(
             connected ? Icons.wifi : Icons.wifi_off,
@@ -129,7 +129,7 @@ class SettingsScreen extends StatelessWidget {
 
   void _showLanguageSheet(BuildContext context) {
     final supported = LocalizationManager.getSupportedLanguages().toList();
-    showModalBottomSheet(
+    showModalBottomSheet<void>(
       context: context,
       showDragHandle: true,
       shape: const RoundedRectangleBorder(
@@ -176,7 +176,7 @@ class SettingsScreen extends StatelessWidget {
   String _formatLastSync(DateTime? dt) {
     if (dt == null) return 'Never'.localized;
     final local = dt.toLocal();
-    final two = (int n) => n.toString().padLeft(2, '0');
+    String two(int n) => n.toString().padLeft(2, '0');
     final y = local.year.toString();
     final m = two(local.month);
     final d = two(local.day);
@@ -348,7 +348,7 @@ class SettingsScreen extends StatelessWidget {
   }
 
   void _showLogoutDialog(BuildContext context) {
-    showDialog(
+    showDialog<void>(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(

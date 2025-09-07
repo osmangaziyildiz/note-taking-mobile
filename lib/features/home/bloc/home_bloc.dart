@@ -54,17 +54,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   void _onRemoveNote(String noteId, Emitter<HomeState> emit) {
-    print('🗑️ Removing note from home state: $noteId');
     final updatedNotes = state.notes.where((note) => note.id != noteId).toList();
     emit(state.copyWith(notes: updatedNotes));
-    print('✅ Note removed from home state. Remaining notes: ${updatedNotes.length}');
   }
 
   void _onAddNote(NoteModel note, Emitter<HomeState> emit) {
-    print('➕ Adding note to home state: ${note.title}');
     final updatedNotes = [note, ...state.notes]; // Add to beginning of list
     emit(state.copyWith(notes: updatedNotes));
-    print('✅ Note added to home state. Total notes: ${updatedNotes.length}');
   }
 
   @override

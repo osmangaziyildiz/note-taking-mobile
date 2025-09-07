@@ -1,8 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:notetakingapp/core/models/note_model.dart';
 import 'package:notetakingapp/core/network/connection_service.dart';
-import 'package:notetakingapp/core/repositories/note_repository.dart';
 import 'package:notetakingapp/core/repositories/local_note_repository.dart';
+import 'package:notetakingapp/core/repositories/note_repository.dart';
 import 'package:notetakingapp/core/repositories/remote_note_repository.dart';
 import 'package:notetakingapp/features/auth/repositories/auth_repository.dart';
 import 'package:uuid/uuid.dart';
@@ -17,7 +18,7 @@ class NoteRepositoryImpl implements NoteRepository {
        _remoteNoteRepository = remoteNoteRepository,
        _connectionService = connectionService,
        _authRepository = authRepository;
-       
+
   final LocalNoteRepository _localNoteRepository;
   final RemoteNoteRepository _remoteNoteRepository;
   final ConnectionService _connectionService;
@@ -26,50 +27,33 @@ class NoteRepositoryImpl implements NoteRepository {
   @override
   Future<Either<String, List<NoteModel>>> getAllNotes() async {
     try {
-      print('🔄 getAllNotes: Starting...');
-      
-      // Önce local'den notları al
+      // First, get notes from local
       final localResult = await _localNoteRepository.getAllNotes();
       if (localResult.isLeft()) {
         return left(localResult.getLeft().getOrElse(() => 'Unknown error'));
       }
-      
+
       final localNotes = localResult.getOrElse((error) => []);
-      print('📱 getAllNotes: Found ${localNotes.length} local notes');
-      // Debug dump of local notes
-      for (final note in localNotes) {
-        print('[LOCAL] id=${note.id} | title=${note.title} | updatedAt=${note.updatedAt.toIso8601String()} | syncStatus=${note.syncStatus.name} | lastSyncedAt=${note.lastSyncedAt?.toIso8601String()}');
-      }
-      
-      // Internet bağlantısı varsa server'dan sync et
+
+      // If internet connection exists, sync with server
       if (_connectionService.isConnected) {
-        print('🌐 getAllNotes: Internet connected, syncing with server...');
-        
-        // Server'dan notları al
+        // Get notes from server
         final remoteResult = await _remoteNoteRepository.getAllNotes();
         if (remoteResult.isRight()) {
           final serverNotes = remoteResult.getOrElse((error) => []);
-          print('📡 getAllNotes: Received ${serverNotes.length} notes from server');
-          
+
           // Conflict resolution - Last write wins
           final mergedNotes = _mergeNotes(localNotes, serverNotes);
-          print('🔄 getAllNotes: Merged ${mergedNotes.length} notes');
-          
-          // Pending notları sync et
+
+          // Sync pending notes
           await _syncPendingNotes();
-          
-          print('✅ getAllNotes: Sync completed, returning ${mergedNotes.length} notes');
+
           return right(mergedNotes);
-        } else {
-          print('⚠️ getAllNotes: Failed to get notes from server, using local notes');
-        }
-      } else {
-        print('📱 getAllNotes: No internet connection, using local notes only');
-      }
-      
+        } else {}
+      } else {}
+
       return right(localNotes);
-    } catch (e) {
-      print('❌ getAllNotes: Error: $e');
+    } on Exception catch (e) {
       return left('Failed to get notes: $e');
     }
   }
@@ -77,36 +61,29 @@ class NoteRepositoryImpl implements NoteRepository {
   @override
   Future<Either<String, NoteModel>> getNoteById(String id) async {
     try {
-      print('🔄 getNoteById: Getting note by ID: $id');
-      
-      // Önce local'den al
+      // First, get note from local
       final localResult = await _localNoteRepository.getNoteById(id);
       if (localResult.isRight()) {
         final localNote = localResult.getOrElse((error) => null);
         if (localNote != null) {
-          print('📱 getNoteById: Found note in local storage');
           return right(localNote);
         }
       }
-      
-      // Internet bağlantısı varsa server'dan al
+
+      // If internet connection exists, get from server
       if (_connectionService.isConnected) {
-        print('🌐 getNoteById: Internet connected, getting from server...');
         final remoteResult = await _remoteNoteRepository.getNoteById(id);
         if (remoteResult.isRight()) {
           final serverNote = remoteResult.getOrElse((error) => null);
           if (serverNote != null) {
-            print('📡 getNoteById: Found note on server, saving locally');
             await _localNoteRepository.saveNote(serverNote);
             return right(serverNote);
           }
         }
       }
-      
-      print('❌ getNoteById: Note not found');
+
       return left('Note not found');
-    } catch (e) {
-      print('❌ getNoteById: Error: $e');
+    } on Exception catch (e) {
       return left('Failed to get note: $e');
     }
   }
@@ -117,20 +94,18 @@ class NoteRepositoryImpl implements NoteRepository {
     required String content,
   }) async {
     try {
-      print('🔄 createNote: Starting...');
-      
-      // Current user'ı al
+      // Get current user
       final currentUserResult = await _authRepository.getCurrentUser();
       if (currentUserResult.isLeft()) {
         return left('User not authenticated');
       }
-      
+
       final currentUser = currentUserResult.getOrElse((error) => null);
       if (currentUser == null) {
         return left('User not found');
       }
-      
-      // UUID ile yeni not oluştur
+
+      // Create new note with UUID
       final note = NoteModel(
         id: const Uuid().v4(),
         title: title,
@@ -139,35 +114,26 @@ class NoteRepositoryImpl implements NoteRepository {
         updatedAt: DateTime.now(),
         ownerUid: currentUser.id,
       );
-      
-      print('📝 createNote: Created note with ID: ${note.id}');
-      
-      // Önce local'e kaydet
+
+      // Save to local
       final saveResult = await _localNoteRepository.saveNote(note);
       if (saveResult.isLeft()) {
         return left(saveResult.getLeft().getOrElse(() => 'Unknown error'));
       }
-      
-      // Internet bağlantısı varsa server'a gönder
+
+      // If internet connection exists, send to server
       if (_connectionService.isConnected) {
-        print('🌐 createNote: Internet connected, sending to server...');
         final syncResult = await _remoteNoteRepository.syncNote(note);
         if (syncResult.isRight()) {
           final syncedNote = syncResult.getOrElse((error) => note);
-          print('📡 createNote: Server response successful');
-          // Local'i güncelle
+          // Update local
           await _localNoteRepository.saveNote(syncedNote);
           return right(syncedNote);
-        } else {
-          print('⚠️ createNote: Failed to sync to server, keeping local only');
-        }
-      } else {
-        print('📱 createNote: No internet connection, saved locally only');
-      }
-      
+        } else {}
+      } else {}
+
       return right(note);
-    } catch (e) {
-      print('❌ createNote: Error: $e');
+    } on Exception catch (e) {
       return left('Failed to create note: $e');
     }
   }
@@ -179,54 +145,43 @@ class NoteRepositoryImpl implements NoteRepository {
     required String content,
   }) async {
     try {
-      print('🔄 updateNote: Starting...');
-      
-      // Local'den notu al
+      // Get note from local
       final localResult = await _localNoteRepository.getNoteById(noteId);
       if (localResult.isLeft()) {
         return left('Note not found locally');
       }
-      
+
       final existingNote = localResult.getOrElse((error) => null);
       if (existingNote == null) {
         return left('Note not found');
       }
-      
-      // Notu güncelle
+
+      // Update note
       final updatedNote = existingNote.copyWith(
         title: title,
         content: content,
         updatedAt: DateTime.now(),
       );
-      
-      print('📝 updateNote: Updated note: ${updatedNote.title}');
-      
-      // Local'i güncelle
+
+      // Update local
       final saveResult = await _localNoteRepository.saveNote(updatedNote);
       if (saveResult.isLeft()) {
         return left(saveResult.getLeft().getOrElse(() => 'Unknown error'));
       }
-      
-      // Internet bağlantısı varsa server'a gönder
+
+      // If internet connection exists, send to server
       if (_connectionService.isConnected) {
-        print('🌐 updateNote: Internet connected, sending to server...');
         final syncResult = await _remoteNoteRepository.syncNote(updatedNote);
         if (syncResult.isRight()) {
           final syncedNote = syncResult.getOrElse((error) => updatedNote);
-          print('📡 updateNote: Server response successful');
-          // Local'i güncelle
+          // Update local
           await _localNoteRepository.saveNote(syncedNote);
           return right(syncedNote);
-        } else {
-          print('⚠️ updateNote: Failed to sync to server, keeping local only');
-        }
-      } else {
-        print('📱 updateNote: No internet connection, updated locally only');
-      }
-      
+        } else {}
+      } else {}
+
       return right(updatedNote);
-    } catch (e) {
-      print('❌ updateNote: Error: $e');
+    } on Exception catch (e) {
       return left('Failed to update note: $e');
     }
   }
@@ -234,64 +189,53 @@ class NoteRepositoryImpl implements NoteRepository {
   @override
   Future<Either<String, Unit>> deleteNote(String id) async {
     try {
-      print('🔄 deleteNote: Starting...');
-      
-      // Local'den sil
+      // Delete from local
       final deleteResult = await _localNoteRepository.deleteNote(id);
       if (deleteResult.isLeft()) {
         return left(deleteResult.getLeft().getOrElse(() => 'Unknown error'));
       }
-      
-      // Internet bağlantısı varsa server'dan da sil
+
+      // If internet connection exists, delete from server
       if (_connectionService.isConnected) {
-        print('🌐 deleteNote: Internet connected, deleting from server...');
-        final remoteResult = await _remoteNoteRepository.deleteNote(id);
-        if (remoteResult.isLeft()) {
-          print('⚠️ deleteNote: Failed to delete from server, but deleted locally');
-        } else {
-          print('✅ deleteNote: Deleted from both local and server');
-        }
-      } else {
-        print('📱 deleteNote: No internet connection, deleted locally only');
+        await _remoteNoteRepository.deleteNote(id);
       }
-      
+
       return right(unit);
-    } catch (e) {
-      print('❌ deleteNote: Error: $e');
+    } on Exception catch (e) {
       return left('Failed to delete note: $e');
     }
   }
 
   // Helper methods
-  List<NoteModel> _mergeNotes(List<NoteModel> localNotes, List<NoteModel> serverNotes) {
-    final Map<String, NoteModel> mergedMap = {};
-    
-    // Local notları ekle
+  List<NoteModel> _mergeNotes(
+    List<NoteModel> localNotes,
+    List<NoteModel> serverNotes,
+  ) {
+    final mergedMap = <String, NoteModel>{};
+
+    // Add local notes
     for (final note in localNotes) {
       mergedMap[note.id] = note;
     }
-    
-    // Server notlarını ekle/ güncelle (conflict resolution)
+
+    // Add/update server notes (conflict resolution)
     for (final serverNote in serverNotes) {
       final localNote = mergedMap[serverNote.id];
       if (localNote == null) {
-        // Server'da var, local'de yok - SİL (offline-first)
-        print('🗑️ _mergeNotes: Server note not in local, deleting from server: ${serverNote.title}');
+        // Has server note, but not in local - DELETE (offline-first)
         _deleteFromServer(serverNote.id);
       } else {
-        // Her ikisinde de var - last write wins
+        // Has both - last write wins
         if (serverNote.updatedAt.isAfter(localNote.updatedAt)) {
-          // Server daha yeni
+          // Server more recent
           mergedMap[serverNote.id] = serverNote;
-          print('🔄 _mergeNotes: Server note is newer, updating local: ${serverNote.title}');
         } else {
-          // Local daha yeni - server'a sync et
-          print('🔄 _mergeNotes: Local note is newer, will sync to server: ${localNote.title}');
+          // Local more recent - sync to server
           _syncLocalNoteToServer(localNote);
         }
       }
     }
-    
+
     return mergedMap.values.toList();
   }
 
@@ -299,10 +243,8 @@ class NoteRepositoryImpl implements NoteRepository {
     final pendingResult = await _localNoteRepository.getPendingNotes();
     if (pendingResult.isRight()) {
       final pendingNotes = pendingResult.getOrElse((error) => []);
-      print('🔄 _syncPendingNotes: Found ${pendingNotes.length} pending notes to sync');
-      
+
       for (final note in pendingNotes) {
-        print('🔄 _syncPendingNotes: Syncing pending note: ${note.title}');
         await _syncLocalNoteToServer(note);
       }
     }
@@ -310,34 +252,25 @@ class NoteRepositoryImpl implements NoteRepository {
 
   Future<void> _syncLocalNoteToServer(NoteModel localNote) async {
     try {
-      print('🔄 _syncLocalNoteToServer: Syncing ${localNote.title} to server...');
-      
       final syncResult = await _remoteNoteRepository.syncNote(localNote);
       if (syncResult.isRight()) {
         final syncedNote = syncResult.getOrElse((error) => localNote);
-        print('✅ _syncLocalNoteToServer: Successfully synced ${localNote.title} to server');
         // Local'i güncelle
         await _localNoteRepository.saveNote(syncedNote);
         // Last synced metadata'yı güncelle
         final markRes = await _localNoteRepository.markAsSynced(syncedNote.id);
-        if (markRes.isLeft()) {
-          print('⚠️ _syncLocalNoteToServer: markAsSynced failed: ${markRes.getLeft().getOrElse(() => 'Unknown error')}');
-        }
-      } else {
-        print('⚠️ _syncLocalNoteToServer: Failed to sync ${localNote.title}: ${syncResult.getLeft()}');
-      }
-    } catch (e) {
-      print('⚠️ _syncLocalNoteToServer: Error syncing ${localNote.title}: $e');
+        if (markRes.isLeft()) {}
+      } else {}
+    } on Exception catch (e) {
+      debugPrint('⚠️ : Error syncing ${localNote.title}: $e');
     }
   }
 
   Future<void> _deleteFromServer(String noteId) async {
     try {
-      print('🗑️ _deleteFromServer: Deleting note from server: $noteId');
       await _remoteNoteRepository.deleteNote(noteId);
-      print('✅ _deleteFromServer: Successfully deleted note from server');
-    } catch (e) {
-      print('⚠️ _deleteFromServer: Error deleting note from server: $e');
+    } on Exception catch (e) {
+      debugPrint('⚠️ : Error deleting note from server: $e');
     }
   }
 }

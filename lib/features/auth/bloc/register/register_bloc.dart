@@ -5,7 +5,6 @@ import 'package:notetakingapp/features/auth/bloc/register/register_state.dart';
 import 'package:notetakingapp/features/auth/repositories/auth_repository.dart';
 
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
-  final AuthRepository _authRepository;
 
   RegisterBloc({
     required AuthRepository authRepository,
@@ -13,6 +12,8 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
         super(const RegisterState()) {
     on<RegisterEvent>(_onRegisterEvent);
   }
+  
+  final AuthRepository _authRepository;
 
   Future<void> _onRegisterEvent(
     RegisterEvent event,

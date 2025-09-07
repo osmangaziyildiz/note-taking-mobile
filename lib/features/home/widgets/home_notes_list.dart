@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:notetakingapp/core/models/note_model.dart';
 import 'package:notetakingapp/core/router/app_router.dart';
 import 'package:notetakingapp/features/home/bloc/home_bloc.dart';
@@ -22,30 +23,28 @@ class HomeNotesList extends StatelessWidget {
         }
 
         if (state.notes.isEmpty) {
-          return const Center(
+          return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(
                   Icons.note_add_outlined,
-                  size: 64,
-                  color: Colors.grey,
+                  size: 64.sp,
+                  color: const Color(0xFF8E8E93),
                 ),
-                SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 Text(
                   'No notes yet',
                   style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.grey,
+                    fontSize: 18.sp,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                SizedBox(height: 8),
+                SizedBox(height: 8.h),
                 Text(
                   'Create your first note',
                   style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey,
+                    fontSize: 14.sp,
                   ),
                 ),
               ],
@@ -82,16 +81,19 @@ class _NoteCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return GestureDetector(
       onTap: onTap,
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 12),
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: const Color(0xFF2C2C2C),
+      child: Card(
+        elevation: 8,
+        color: isDark ? const Color(0xFF2C2C2E) : const Color(0xFFF5F5F5),
+        shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
         ),
-        child: Column(
+        margin: const EdgeInsets.only(bottom: 12),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
@@ -99,33 +101,31 @@ class _NoteCard extends StatelessWidget {
                 Expanded(
                   child: Text(
                     note.title,
-                  style: const TextStyle(
-                    fontSize: 16,
+                  style: TextStyle(
+                    fontSize: 16.sp,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white,
                   ),
                 ),
               ),
               if (note.isFavorite)
-                const Icon(
+                Icon(
                   Icons.favorite,
-                  color: Color(0xFFE53E3E),
-                  size: 16,
+                  color: const Color(0xFFE53E3E),
+                  size: 16.sp,
                 ),
             ],
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8.h),
           Text(
             note.content,
-            style: const TextStyle(
-              fontSize: 14,
-              color: Colors.grey,
+            style: TextStyle(
+              fontSize: 14.sp,
             ),
             maxLines: 3,
             overflow: TextOverflow.ellipsis,
           ),
           if (note.tags.isNotEmpty) ...[
-            const SizedBox(height: 8),
+            SizedBox(height: 8.h),
             Wrap(
               spacing: 8,
               runSpacing: 4,
@@ -141,25 +141,26 @@ class _NoteCard extends StatelessWidget {
                   ),
                   child: Text(
                     tag,
-                    style: const TextStyle(
-                      fontSize: 12,
-                      color: Color(0xFFE53E3E),
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      color: const Color(0xFFE53E3E),
                     ),
                   ),
                 );
               }).toList(),
             ),
           ],
-          const SizedBox(height: 8),
+          SizedBox(height: 8.h),
           Text(
             'Created: ${_formatDate(note.createdAt)}',
-            style: const TextStyle(
-              fontSize: 12,
-              color: Colors.grey,
+            style: TextStyle(
+              fontSize: 12.sp,
+              color: const Color(0xFF8E8E93),
             ),
           ),
         ],
       ),
+        ),
       ),
     );
   }

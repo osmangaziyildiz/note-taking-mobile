@@ -10,7 +10,7 @@ class LocalNoteService {
   // CRUD operations
   Future<List<NoteModel>> getAllNotes() async {
     final notes = await _database.getAllNotes();
-    return notes.map((note) => _noteFromDrift(note)).toList();
+    return notes.map(_noteFromDrift).toList();
   }
   
   Future<NoteModel?> getNoteById(String id) async {
@@ -29,7 +29,7 @@ class LocalNoteService {
   // Sync operations
   Future<List<NoteModel>> getPendingNotes() async {
     final notes = await _database.getPendingNotes();
-    return notes.map((note) => _noteFromDrift(note)).toList();
+    return notes.map(_noteFromDrift).toList();
   }
   
   Future<void> markAsSynced(String id) async {
@@ -49,7 +49,7 @@ class LocalNoteService {
   
   Future<List<NoteModel>> getNotesModifiedAfter(DateTime lastSync) async {
     final notes = await _database.getNotesModifiedAfter(lastSync);
-    return notes.map((note) => _noteFromDrift(note)).toList();
+    return notes.map(_noteFromDrift).toList();
   }
 
   // Helper methods to convert between NoteModel and Drift Note

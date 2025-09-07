@@ -31,13 +31,11 @@ class NoteEditBloc extends Bloc<NoteEditEvent, NoteEditState> {
   }
 
   Future<void> _onLoadNote(String noteId, Emitter<NoteEditState> emit) async {
-    print('🔄 Loading note with ID: $noteId');
     emit(state.copyWith(isLoading: true, error: null));
 
     final result = await _noteRepository.getNoteById(noteId);
     result.fold(
       (error) {
-        print('❌ Error loading note: $error');
         emit(
           state.copyWith(
             isLoading: false,
@@ -47,7 +45,6 @@ class NoteEditBloc extends Bloc<NoteEditEvent, NoteEditState> {
         );
       },
       (note) {
-        print('✅ Note loaded successfully: ${note.title}');
         emit(
           state.copyWith(
             isLoading: false,
@@ -151,14 +148,12 @@ class NoteEditBloc extends Bloc<NoteEditEvent, NoteEditState> {
       return;
     }
 
-    print('🔄 Starting delete process for note: ${state.note!.title}');
     emit(state.copyWith(isDeleting: true, error: null));
 
     final result = await _noteRepository.deleteNote(state.note!.id);
 
     result.fold(
       (error) {
-        print('❌ Delete failed: $error');
         emit(
           state.copyWith(
             isDeleting: false,
@@ -168,7 +163,6 @@ class NoteEditBloc extends Bloc<NoteEditEvent, NoteEditState> {
         );
       },
       (success) {
-        print('✅ Delete successful');
 
         // Notify HomeBloc to remove the note from its state
         sl.get<HomeBloc>().add(HomeEvent.removeNote(state.note!.id));

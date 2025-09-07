@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:notetakingapp/features/auth/models/user_model.dart';
@@ -130,13 +131,9 @@ class AuthRepositoryImpl implements AuthRepository {
       await _googleSignIn.initialize();
       
       // Trigger the authentication flow with scopes
-      final GoogleSignInAccount? googleUser = await _googleSignIn.authenticate(
+      final googleUser = await _googleSignIn.authenticate(
         scopeHint: ['email', 'profile'],
       );
-      
-      if (googleUser == null) {
-        return left('Google sign-in was cancelled by user');
-      }
 
       // Get authorization for the user
       final auth = await googleUser.authorizationClient.authorizationForScopes(['email', 'profile']);
@@ -309,9 +306,8 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<void> _saveUserToFirestore(UserModel user) async {
     try {
       await _firestore.collection('users').doc(user.id).set(user.toJson());
-      print('✅ User saved to Firestore: ${user.id}');
-    } catch (e) {
-      print('❌ Error saving user to Firestore: $e');
+    } on Exception catch (e) {
+        debugPrint('❌ Error saving user to Firestore: $e');
       // Don't throw error here, just log it
     }
   }
